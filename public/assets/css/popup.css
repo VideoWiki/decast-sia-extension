@@ -1,0 +1,105 @@
+body {
+  margin: 0%;
+  padding: 0%;
+  background-color: #010101;
+}
+
+* {
+  font-family: "JetBrains Mono", monospace !important;
+}
+
+.parent_app_{
+    width: 500px;
+    height: 600px;
+    background-color: #010101;
+    overflow: hidden;
+}
+
+.basic_parent_div {
+  display: flex;
+  padding: 1rem;
+  flex-direction: column;
+  gap: 15px;
+  color: white;
+}
+
+.parent_1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.basic_child_1 {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  height: 40px;
+}
+
+.basic_child_1 img {
+  width: 40px;
+  height: 40px;
+}
+
+.basic_child_1 p {
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.basic_child_2 img {
+  width: 25px;
+  height: 25px;
+}
+
+.parent_2 {
+  width: 100%;
+  background: #fff;
+  height: 25px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  align-items: center;
+}
+
+.basic_child_3 {
+  width: 80px;
+  height: 10px;
+  background: #010101;
+}
+
+.basic_child_4 {
+  width: 50px;
+  height: 10px;
+  background: #010101;
+  margin-right: 15px;
+}
+
+.parent_3 {
+  width: 100%;
+  height: 385px;
+  border: 1px solid #fff;
+}
+
+.basic_button_section {
+  width: 100% !important;
+  margin: 0% !important;
+  display: flex;
+  justify-content: space-between;
+  align-self: baseline;
+  padding: 15px;
+}
+
+.basic_button_section button {
+  border: 1px solid black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  width: 130px;
+  height: 60px;
+}
+
+.calls_btn_ span svg {
+  fill: yellow !important;
+}
