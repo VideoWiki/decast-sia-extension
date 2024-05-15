@@ -1,0 +1,17 @@
+{
+    "manifest_version": 3,
+    "name": "Decast",
+    "version": "1.0.0",
+    "description": "Create and manage your Deacst calls and Casts on the go.",
+    "permissions": [
+        "storage",
+        "tabs",
+        "activeTab"
+    ],
+    "action": {
+        "default_popup": "popup.html"
+    },
+    "content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self'"
+    }
+}

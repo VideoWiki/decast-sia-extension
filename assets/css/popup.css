@@ -1,3 +1,8 @@
+/* assets/css/popup.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   margin: 0%;
   padding: 0%;
@@ -8,11 +13,11 @@ body {
   font-family: "JetBrains Mono", monospace !important;
 }
 
-.parent_app_{
-    width: 500px;
-    height: 600px;
-    background-color: #010101;
-    overflow: hidden;
+.parent_app_ {
+  width: 500px;
+  height: 600px;
+  background-color: #010101;
+  overflow: hidden;
 }
 
 .basic_parent_div {
@@ -96,10 +101,23 @@ body {
   justify-content: space-between;
   align-items: center;
   gap: 8px;
-  width: 130px;
+  width: 140px;
   height: 60px;
 }
 
-.calls_btn_ span svg {
-  fill: yellow !important;
+.calls_btn_{
+  background: #010101;
+  color: white ;
+}
+
+.call_icon_cont_ svg path{
+  fill: white !important;
+}
+
+.call_icon_cont_ svg .path_black_{
+  fill: black !important;
+}
+
+.casts_btn svg path{
+  fill: black !important;
 }
