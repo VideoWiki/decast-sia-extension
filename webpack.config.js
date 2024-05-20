@@ -5,11 +5,13 @@ module.exports = {
   mode: 'development', 
   devtool: 'inline-source-map',
   entry: {
-    popup: './assets/js/popup.js'
+    popup: './assets/js/popup.js',
+    background:'./assets/js/background.js',
+    contentScript: './assets/js/contentScript.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'popup.js'
+    filename: '[name].js'
   },
   module: {
     rules: [

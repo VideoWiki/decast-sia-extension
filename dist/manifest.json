@@ -6,12 +6,28 @@
     "permissions": [
         "storage",
         "tabs",
-        "activeTab"
+        "activeTab",
+        "scripting",
+        "https://decast.live/*"
     ],
     "action": {
         "default_popup": "popup.html"
     },
     "content_security_policy": {
         "extension_pages": "script-src 'self'; object-src 'self'"
-    }
+    },
+    "content_scripts": [
+        {
+            "matches": ["https://decast.live/*"],
+            "js": [
+                "contentScript.js"
+            ]
+        }
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "host_permissions": [
+        "https://decast.live/*"
+      ]
 }
