@@ -5,7 +5,7 @@
       <div class="parent_1">
         <div class="basic_child_1">
           <img src="../../images/new-dc.svg" />
-          <p>Anish Jha</p>
+          <p>{{ userInfo.first_name }} {{ userInfo.last_name }}</p>
         </div>
 
         <div class="basic_child_2">
@@ -140,8 +140,8 @@ export default {
   },
   data() {
     return {
-      accessToken: "",
-      userInfo: {},
+      // accessToken: "",
+      // userInfo: {},
       rooms: true,
       casts: false,
       decasts: false,
@@ -149,6 +149,17 @@ export default {
       isClicked2:false,
       isClicked3:false,
     };
+  },
+  computed:{
+    accessToken() {
+      return this.$store.state.accessToken;
+    },
+    userInfo() {
+      return this.$store.state.userInfo;
+    }
+    // getFirstname() {
+    //   return this.userInfo.first_name;
+    // },
   },
   methods: {
     onRoom() {
@@ -176,17 +187,6 @@ export default {
       this.isClicked3=true;
     },
   },
-  // props: {
-  //   accessToken: String,
-  //   userInfo: Object,
-  // },
-
-  // mounted() {
-  //   chrome.storage.local.get(['accessToken', 'userInfo'], (result) => {
-  //     this.accessToken = result.accessToken;
-  //     this.userInfo = result.userInfo
-  //   });
-  // }
 };
 </script>
 

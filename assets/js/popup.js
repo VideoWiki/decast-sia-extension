@@ -28,6 +28,8 @@ chrome.runtime.sendMessage({ action: 'getLocalStorage' }, function(response) {
 
     console.log('Data retrieved successfully:', response);
   } else {
+    alert("unable to find userdata, please login to decast.live to continue")
+    window.open("https://decast.live", "_blank");
     console.error('Invalid response:', response);
   }
 });
