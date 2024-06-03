@@ -6,7 +6,6 @@ const app = createApp({
   render: () => h(PopUp)
 });
 
-// Using the Vuex store
 app.use(store);
 
 app.mount('#app');
@@ -27,9 +26,8 @@ chrome.runtime.sendMessage({ action: 'getLocalStorage' }, function(response) {
     store.commit('setUserInfo', userInfo);
 
     console.log('Data retrieved successfully:', response);
-  } else {
-    alert("unable to find userdata, please login to decast.live to continue")
-    window.open("https://decast.live", "_blank");
+  } 
+  else {
     console.error('Invalid response:', response);
   }
 });

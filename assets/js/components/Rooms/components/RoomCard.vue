@@ -113,8 +113,8 @@ export default {
                 .dispatch('room/start', id)
                 .then((res) => {
                     this.isRoomStart = true;
-                    window.open(res.data.room_url, '_blank');
-                    // window.open(res.data.room_url, '_blank','width=900,height=700,scrollbars=yes,resizable=yes')
+                    // window.open(res.data.room_url, '_blank');
+                    window.open(res.data.room_url, '_blank','width=900,height=700,scrollbars=yes,resizable=yes');
                 })
                 .catch((e) => {
                     console.log(e);

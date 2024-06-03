@@ -1,5 +1,30 @@
 <template>
-  <div class="parent_app_">
+  <div class="parent_app_" v-if="Object.keys(userInfo).length == 0 && accessToken == null">
+    <div class="basic_parent_div">
+      <!-- header section -->
+      <div class="parent_1">
+        <div class="basic_child_1">
+          <img src="../../images/new-dc.svg" />
+          <p>Welcome to Decast!</p>
+        </div>
+
+        <div class="basic_child_2">
+          <img src="../../images/settings.svg" />
+        </div>
+      </div>
+
+      <div class="parent_2">
+        <div class="basic_child_3"></div>
+        <div class="basic_child_4"></div>
+      </div>
+
+      <div class="parent_nouser">
+        <NoUser/>
+      </div>
+    </div>
+  </div>
+
+  <div v-else class="parent_app_">
     <div class="basic_parent_div">
       <!-- header section -->
       <div class="parent_1">
@@ -30,7 +55,8 @@
     <!-- footer section  -->
 
     <div class="basic_button_section bg-white">
-      <button @click="onRoom" :class="{ 'calls_btn_': true, 'calls_clicked': isClicked1 }" class="px-4 py-2 text-xl font-bold">
+      <button @click="onRoom" :class="{ 'calls_btn_': true, 'calls_clicked': isClicked1 }"
+        class="px-4 py-2 text-xl font-bold">
         <span class="call_icon_cont_"><svg width="34" height="34" viewBox="0 0 34 34" fill="none"
             xmlns="http://www.w3.org/2000/svg">
             <path d="M21.103 0V2.08333H12.7696V0H21.103Z" fill="white" />
@@ -70,7 +96,8 @@
         </span>
         CALLS
       </button>
-      <button @click="onCasts" :class="{ 'casts_btn': true, 'cast_clicked': isClicked2 }" class="px-4 py-2 text-xl font-bold">
+      <button @click="onCasts" :class="{ 'casts_btn': true, 'cast_clicked': isClicked2 }"
+        class="px-4 py-2 text-xl font-bold">
         <span><svg width="38" height="27" viewBox="0 0 38 27" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M22.7034 6.99957H24.9257V4.77734H22.7034V6.99957Z" fill="white" />
             <path d="M24.9257 9.22179H27.148V6.99957H24.9257V9.22179Z" fill="white" />
@@ -101,7 +128,8 @@
         </span>
         CASTS
       </button>
-      <button @click="onDecasts" :class="{ 'decast_btn': true, 'decast_clicked': isClicked3 }" class="decast_btn px-4 py-2 text-xl font-bold">
+      <button @click="onDecasts" :class="{ 'decast_btn': true, 'decast_clicked': isClicked3 }"
+        class="decast_btn px-4 py-2 text-xl font-bold">
         <span><svg width="24" height="34" viewBox="0 0 24 34" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M14.3803 23.8096V21.4286V19.0477V16.6667H9.61841V19.0477V21.4286V23.8096V26.1905V28.5715H14.3803V26.1905V23.8096Z"
@@ -130,13 +158,15 @@
 import RoomSection from "./Rooms/RoomSection.vue";
 import CastSection from "./Casts/CastSection.vue";
 import DecastSection from "./Decasts/DecastSection.vue";
+import NoUser from "./NoData/NoUser.vue";
 import "../../css/popup.css";
 export default {
   name: "PopUp",
   components: {
     RoomSection,
     CastSection,
-    DecastSection
+    DecastSection,
+    NoUser
   },
   data() {
     return {
@@ -145,12 +175,12 @@ export default {
       rooms: true,
       casts: false,
       decasts: false,
-      isClicked1:true,
-      isClicked2:false,
-      isClicked3:false,
+      isClicked1: true,
+      isClicked2: false,
+      isClicked3: false,
     };
   },
-  computed:{
+  computed: {
     accessToken() {
       return this.$store.state.accessToken;
     },
@@ -166,31 +196,37 @@ export default {
       this.casts = false;
       this.decasts = false;
       this.rooms = true;
-      this.isClicked2=false;
-      this.isClicked1=true;
-      this.isClicked3=false;
+      this.isClicked2 = false;
+      this.isClicked1 = true;
+      this.isClicked3 = false;
+      console.log(this.accessToken, this.userInfo, 'data')
     },
     onCasts() {
       this.casts = true;
       this.decasts = false;
       this.rooms = false;
-      this.isClicked2=true;
-      this.isClicked1=false;
-      this.isClicked3=false;
+      this.isClicked2 = true;
+      this.isClicked1 = false;
+      this.isClicked3 = false;
+      console.log(this.accessToken, this.userInfo, 'data')
     },
     onDecasts() {
       this.casts = false;
       this.decasts = true;
       this.rooms = false;
-      this.isClicked2=false;
-      this.isClicked1=false;
-      this.isClicked3=true;
+      this.isClicked2 = false;
+      this.isClicked1 = false;
+      this.isClicked3 = true;
     },
   },
 };
 </script>
 
 <style scoped>
+ * {
+    font-family: 'JetBrains Mono', monospace !important;
+  }
+  
 .parent_app_ {
   width: 500px;
   height: 600px;
@@ -303,21 +339,21 @@ export default {
 
 */
 
-.cast_clicked{
+.cast_clicked {
   background: #010101;
   color: #fff;
 }
 
-.cast_clicked svg path{
+.cast_clicked svg path {
   fill: white !important;
-} 
+}
 
-.decast_clicked{
+.decast_clicked {
   background: #010101;
   color: #fff;
 }
 
-.decast_clicked svg path{
+.decast_clicked svg path {
   fill: white !important;
 }
 </style>

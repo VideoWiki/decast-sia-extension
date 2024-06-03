@@ -1,32 +1,27 @@
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     if (message.action === 'getLocalStorage') {
-        // Checking if already have stored data
         chrome.storage.local.get(['accessToken', 'userInfo'], function(items) {
             if (items.accessToken && items.userInfo) {
                 sendResponse({ accessToken: items.accessToken, userInfo: items.userInfo });
             } else {
-                // query for the decast tab
                 chrome.tabs.query({}, function(tabs) {
                     let decastTab = null;
 
                     for (let tab of tabs) {
-                        if (tab.url.includes('decast.live')) {
+                        if (tab.url.includes('https://decast.live/')) {
                             decastTab = tab;
                             break;
                         }
                     }
 
                     if (decastTab) {
-                        // Injecting content script
                         chrome.scripting.executeScript({
                             target: { tabId: decastTab.id },
                             files: ['contentScript.js']
                         }, () => {
                             chrome.tabs.sendMessage(decastTab.id, { action: 'getLocalStorage' }, function(response) {
                                 if (response && response.accessToken && response.userInfo) {
-                                    // Storing the retrieved data
                                     chrome.storage.local.set({ accessToken: response.accessToken, userInfo: response.userInfo }, function() {
-                                        // Sending the stored data back to the popup
                                         sendResponse(response);
                                     });
                                 } else {
