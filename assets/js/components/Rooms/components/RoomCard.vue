@@ -8,7 +8,7 @@
             <div class="flex flex-row justify-start items-center gap-4 mt-2">
                 <p class="text-md shortURL">{{ shortURL }}</p> <button class="custm-style"
                     @click="copy(room.short_code)">
-                    <span>
+                    <span v-tooltip="'/Copy'">
                         <svg width="20" height="20" viewBox="0 0 24 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M22.2087 1.53345H8.40866V10.635L2.27533 10.7334V21.4668H13.0087V15.3334H22.2087V1.53345Z"
@@ -28,7 +28,7 @@
         </div>
 
         <div class="cursor-pointer">
-            <span v-if="!isRoomStart" @click.prevent="start(room.room_url)">
+            <span v-if="!isRoomStart" @click.prevent="start(room.room_url)" v-tooltip="'/Start'">
                 <svg width="24" height="24" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1.5 1.49999H0V16.5H1.5V1.49999Z" fill="black" />
                     <path d="M1.50004 0L1.5 1.49999L4.50002 1.5V0H1.50004Z" fill="black" />

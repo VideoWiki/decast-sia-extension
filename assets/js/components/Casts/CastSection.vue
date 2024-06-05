@@ -35,11 +35,10 @@
         <RecordingCardShimmer :style="{ opacity: 0.6 }" />
       </div>
       <div v-else-if="recordingList.length">
-        <!-- <div class="recordings flex justify-between items-center mb-4"
-                v-for="(recording, index) in flattenedRecordingList" :key="index">
-                <RecordingCard :recording="recording" :index="index" :getRecordings="getRecordings"/>
-              </div> -->
-        hi
+        <div class="recordings flex justify-between items-center mb-4"
+          v-for="(recording, index) in flattenedRecordingList" :key="index">
+          <RecordingCard :recording="recording" :index="index" :getRecordings="getRecordings" />
+        </div>
       </div>
       <div v-else class="recording flex flex-col items-center justify-items-center">
         <span>
@@ -73,6 +72,7 @@
 <script>
 import CastCardShimmer from './components/CastCardShimmer.vue';
 import RecordingCardShimmer from './components/RecordingCardShimmer.vue';
+import RecordingCard from './components/RecordingCard.vue';
 import CastCard from './components/CastCard.vue';
 export default {
   name: "CastSection",
@@ -92,6 +92,7 @@ export default {
   components: {
     CastCardShimmer,
     RecordingCardShimmer,
+    RecordingCard,
     CastCard
   },
   mounted() {

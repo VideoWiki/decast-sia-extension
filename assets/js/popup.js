@@ -1,13 +1,14 @@
 import { createApp, h } from 'vue';
 import store from './store/index.js';
 import PopUp from './components/PopUp.vue';
-
+import FloatingVue from 'floating-vue'
+import 'floating-vue/dist/style.css';
 const app = createApp({
   render: () => h(PopUp)
 });
 
 app.use(store);
-
+app.use(FloatingVue)
 app.mount('#app');
 
 // Sending message to background script to retrieve local storage data
