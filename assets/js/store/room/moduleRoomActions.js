@@ -17,7 +17,18 @@ export default {
       }
       commit('SET_ROOM', room_data[0]);
     } catch (error) {
-      console.error('Error fetching room list:', error);
+      if (error.response && error.response.status === 403) {
+        commit('setErrorModal', { errorMessage: 'Session expired. Please log in again.' }, { root: true });
+        chrome.storage.local.remove(['accessToken', 'userInfo'], function() {
+          console.log('Session data cleared.');
+          commit('setAccessToken', null);
+          commit('setUserInfo', null);
+        });
+        this.errorMessage = 'Session expired. Please log in again.';
+        this.showModal = true;
+      } else {
+        console.error('Error fetching room list:', error);
+      }
     }
   },
 
@@ -35,7 +46,16 @@ export default {
       });
       return res;
     } catch (error) {
-      console.error('Error starting room:', error);
+      if (error.response && error.response.status === 403) {
+       commit('setErrorModal', { errorMessage: 'Session expired. Please log in again.' }, { root: true });
+        chrome.storage.local.remove(['accessToken', 'userInfo'], function() {
+          console.log('Session data cleared.');
+          commit('setAccessToken', null);
+          commit('setUserInfo', null);
+        });
+      } else {
+        console.error('Error starting room:', error);
+      }
     }
   },
 
@@ -50,7 +70,16 @@ export default {
       commit('SET_RECORDINGS', res.data.recordings);
       return res.data;
     } catch (error) {
-      console.error('Error fetching recordings:', error);
+      if (error.response && error.response.status === 403) {
+       commit('setErrorModal', { errorMessage: 'Session expired. Please log in again.' }, { root: true });
+        chrome.storage.local.remove(['accessToken', 'userInfo'], function() {
+          console.log('Session data cleared.');
+          commit('setAccessToken', null);
+          commit('setUserInfo', null);
+        });
+      } else {
+        console.error('Error fetching recordings:', error);
+      }
     }
   },
 };

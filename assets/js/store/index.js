@@ -5,7 +5,9 @@ const store = createStore({
   state() {
     return {
       accessToken: null,
-      userInfo: {}
+      userInfo: {},
+      showModal: false,
+      errorMessage: ''
     };
   },
   mutations: {
@@ -14,6 +16,22 @@ const store = createStore({
     },
     setUserInfo(state, userInfo) {
       state.userInfo = userInfo;
+    },
+    setErrorModal(state, { errorMessage }) {
+      state.showModal = true;
+      state.errorMessage = errorMessage;
+    },
+    closeErrorModal(state) {
+      state.showModal = false;
+      state.errorMessage = '';
+    }
+  },
+  actions: {
+    setErrorModal({ commit }, { errorMessage }) {
+      commit('setErrorModal', { errorMessage });
+    },
+    closeErrorModal({ commit }) {
+      commit('closeErrorModal');
     }
   },
   modules:{

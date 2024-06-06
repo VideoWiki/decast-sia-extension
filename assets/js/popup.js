@@ -8,7 +8,7 @@ const app = createApp({
 });
 
 app.use(store);
-app.use(FloatingVue)
+app.use(FloatingVue);
 app.mount('#app');
 
 // Sending message to background script to retrieve local storage data

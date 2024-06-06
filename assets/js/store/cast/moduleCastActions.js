@@ -2,16 +2,30 @@ import axios from 'axios';
 import constants from '../../constant';
 
 export default {
-  async getAllCasts({ rootState }) {
+  async getAllCasts({ rootState, commit }) {
     const accessToken = rootState.accessToken;
-    return axios.get(constants.apiCastUrl + '/api/event/get/all/info/', {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`
+    try {
+      const res = await axios.get(constants.apiCastUrl + '/api/event/get/all/info/', {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      return res;
+    } catch (error) {
+      if (error.response && error.response.status === 403) {
+        commit('setErrorModal', { errorMessage: 'Session expired. Please log in again.' }, { root: true });
+        chrome.storage.local.remove(['accessToken', 'userInfo'], function() {
+          console.log('Session data cleared.');
+          commit('setAccessToken', null);
+          commit('setUserInfo', null);
+        });
+      } else {
+        console.error('Error fetching all casts:', error);
       }
-    });
+    }
   },
 
-  async getOriginalUrl({ rootState }, shortCode) {
+  async getOriginalUrl({ rootState, commit }, shortCode) {
     const accessToken = rootState.accessToken;
     try {
       const res = await axios.get(`${constants.apiCastUrl}/api/url/retrieve/${shortCode}/`, {
@@ -22,11 +36,21 @@ export default {
       });
       return res;
     } catch (error) {
+      if (error.response && error.response.status === 403) {
+        commit('setErrorModal', { errorMessage: 'Session expired. Please log in again.' }, { root: true });
+        chrome.storage.local.remove(['accessToken', 'userInfo'], function() {
+          console.log('Session data cleared.');
+          commit('setAccessToken', null);
+          commit('setUserInfo', null);
+        });
+      } else {
+        console.error('Error fetching original URL:', error);
+      }
       return null;
     }
   },
 
-  meetingInfo({ rootState }, payload) {
+  meetingInfo({ rootState, commit }, payload) {
     const accessToken = rootState.accessToken;
     return new Promise((resolve, reject) => {
       axios.get(`${constants.apiCastUrl}/api/event/meeting/info/?public_meeting_id=${payload}`, {
@@ -39,13 +63,22 @@ export default {
         resolve(res);
       })
       .catch((error) => {
-        console.log('meeting not working');
+        if (error.response && error.response.status === 403) {
+          commit('setErrorModal', { errorMessage: 'Session expired. Please log in again.' }, { root: true });
+          chrome.storage.local.remove(['accessToken', 'userInfo'], function() {
+            console.log('Session data cleared.');
+            commit('setAccessToken', null);
+            commit('setUserInfo', null);
+          });
+        } else {
+          console.log('meeting not working');
+        }
         reject(error);
       });
     });
   },
 
-  joinNow({ rootState }, payload) {
+  joinNow({ rootState, commit }, payload) {
     const accessToken = rootState.accessToken;
     return new Promise((resolve, reject) => {
       axios.post(constants.apiCastUrl + '/api/event/meeting/join/', payload, {
@@ -58,21 +91,42 @@ export default {
         resolve(response.data);
       })
       .catch((error) => {
-        console.log('cannot join');
+        if (error.response && error.response.status === 403) {
+          commit('setErrorModal', { errorMessage: 'Session expired. Please log in again.' }, { root: true });
+          chrome.storage.local.remove(['accessToken', 'userInfo'], function() {
+            console.log('Session data cleared.');
+            commit('setAccessToken', null);
+            commit('setUserInfo', null);
+          });
+        } else {
+          console.log('cannot join');
+        }
         reject(error);
       });
     });
   },
 
-
   async recordings({ commit, rootState }) {
     const accessToken = rootState.accessToken;
-    const res = await axios.get(constants.apiCastUrl + '/api/event/user/recordings', {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`
+    try {
+      const res = await axios.get(constants.apiCastUrl + '/api/event/user/recordings', {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      commit('SET_RECORDINGLIST', res.data.status);
+      return res.data.status;
+    } catch (error) {
+      if (error.response && error.response.status === 403) {
+        commit('setErrorModal', { errorMessage: 'Session expired. Please log in again.' }, { root: true });
+        chrome.storage.local.remove(['accessToken', 'userInfo'], function() {
+          console.log('Session data cleared.');
+          commit('setAccessToken', null);
+          commit('setUserInfo', null);
+        });
+      } else {
+        console.error('Error fetching recordings:', error);
       }
-    });
-    commit('SET_RECORDINGLIST', res.data.status);
-    return res.data.status;
+    }
   },
 };

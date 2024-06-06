@@ -42,9 +42,12 @@
         <div class="basic_child_3"></div>
         <div class="basic_child_4"></div>
       </div>
+
+
       <!-- calls section  -->
 
       <div class="parent_3 p-4">
+        <ErrorModal :errorMessage="$store.state.errorMessage" :showModal="$store.state.showModal" @close="$store.commit('closeErrorModal')" />
         <RoomSection v-if="rooms" />
         <CastSection v-if="casts" />
         <DecastSection v-if="decasts" />
@@ -159,6 +162,7 @@ import RoomSection from "./Rooms/RoomSection.vue";
 import CastSection from "./Casts/CastSection.vue";
 import DecastSection from "./Decasts/DecastSection.vue";
 import NoUser from "./NoData/NoUser.vue";
+import ErrorModal from '../../common/SessionExpired.vue';
 import "../../css/popup.css";
 export default {
   name: "PopUp",
@@ -166,7 +170,8 @@ export default {
     RoomSection,
     CastSection,
     DecastSection,
-    NoUser
+    NoUser,
+    ErrorModal
   },
   data() {
     return {
@@ -298,6 +303,7 @@ export default {
   width: 100%;
   height: 385px;
   border: 1px solid #fff;
+  position: relative;
 }
 
 .basic_button_section {
