@@ -4,11 +4,12 @@
         <div v-else class="cast_list flex flex-col justify-between items-start text-left mb-4 w-full py-3 px-4">
             <div class="flex flex-row justify-between items-center w-full">
                 <div class="flex flex-col gap-1">
-                    <p class="font-semibold text-lg flex items-center">{{ truncateText(castDetails.event_name, 25)
-                        }}
-                        <span class="text-red-500 text-sm flex items-center gap-2"
+                    <p class="font-semibold text-lg flex items-center">
+                        <span class="text-red-500 text-sm flex items-center gap-2 mr-2"
                             v-if="castDetails.is_running === 'true'"><span
-                                class="basic_live_dot_ rounded-full"></span></span>
+                                class="basic_live_dot_ rounded-full"></span></span> {{
+                                    truncateText(castDetails.event_name, 25)
+                                }}
                     </p>
                     <p style="color: #a6a6a6;" class="mt-2">{{ castDetails.schedule_time }}</p>
                 </div>
@@ -38,6 +39,21 @@
                     </span>
 
                     <span v-if="castDetails.is_running === 'true'">
+                        <svg width="24" height="24" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="28" height="29" viewBox="0 0 28 29" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2.09961 26.2758V2.47583H25.8996V26.2758H2.09961Z" fill="#FF4646" />
+                                <path d="M28 2.47598H25.9V26.276H28V2.47598Z" fill="black" />
+                                <path d="M2.1 0.375977V2.47598H25.9V0.375977H2.1Z" fill="black" />
+                                <path d="M0 26.276H2.1V2.47598H0V26.276Z" fill="black" />
+                                <path d="M2.1 26.276V28.376H25.9V26.276H2.1Z" fill="black" />
+                            </svg>
+
+                        </svg>
+
+                    </span>
+
+                    <span v-else-if="isCastStart && castDetails.is_running === 'false'">
                         <svg width="24" height="24" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <svg width="28" height="29" viewBox="0 0 28 29" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -143,7 +159,8 @@ export default {
             try {
                 const res = await this.$store.dispatch('cast/joinNow', data);
                 this.isCastStart = true;
-                window.open(res.url, '_blank');
+                // window.open(res.url, '_blank');
+                window.open(res.url, '_blank', 'width=1366,height=768,scrollbars=yes,resizable=yes');
             } catch (e) {
                 console.log('error', e);
             }
@@ -166,9 +183,9 @@ export default {
 }
 
 .basic_live_dot_ {
-  background-color: red !important;
-  height: 8px;
-  width: 8px;
+    background-color: red !important;
+    height: 12px;
+    width: 12px;
 }
 
 .shortURL {

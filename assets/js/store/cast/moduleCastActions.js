@@ -106,6 +106,14 @@ export default {
     });
   },
 
+  async deleteRecording({ commit, state }, recordingId) {
+    const recordings = state.recordings;
+    const newRecordings = recordings.map(subList =>
+      subList.filter(item => item["Record ID"] !== recordingId)
+    );
+    commit('SET_RECORDINGLIST', newRecordings);
+  },
+
   async recordings({ commit, rootState }) {
     const accessToken = rootState.accessToken;
     try {

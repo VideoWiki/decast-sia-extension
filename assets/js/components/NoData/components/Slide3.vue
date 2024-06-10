@@ -32,6 +32,7 @@ export default {
                 if (this.timeLeft <= 0) {
                     clearInterval(this.redirectIn);
                     window.open("https://decast.live", "_blank");
+                    // window.open("https://decast.live", '_blank','width=1366,height=768,scrollbars=yes,resizable=yes');
                 }
             }, 1000);
         }

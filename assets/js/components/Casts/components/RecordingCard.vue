@@ -2,7 +2,7 @@
     <div class="recordings flex flex-col justify-between items-center mb-4 w-full py-2 px-4 gap-2">
         <div class="flex flex-row justify-between items-center w-full">
             <p class="text-lg font-semibold">{{ truncateText(recording.Name, 20) }} </p>
-            <div class="flex gap-3 justify-end items-center">
+            <div class="flex gap-2 justify-end items-center">
                 <span class="edit_btn cursor-pointer" @click="editRecord" v-tooltip="'/Edit'">
                     <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -11,6 +11,7 @@
                     </svg>
 
                 </span>
+                
 
                 <span class="copy_btn cursor-pointer" @click="copyRecording" v-tooltip="'/Copy'">
                     <svg width="18" height="18" viewBox="0 0 24 23" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -27,6 +28,20 @@
                         <path d="M8.40861 0V1.53333H22.2086V0H8.40861Z" fill="#A1A1A1" />
                     </svg>
 
+                </span>
+
+                <span class="edit_btn cursor-pointer" @click="handleDeleteRecording" v-tooltip="'/Delete'">
+                    <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10.8 8.4H9.6V9.6H10.8V8.4Z" fill="#A1A1A1" />
+                        <path d="M12 15.6H10.8V16.8H12V15.6Z" fill="#A1A1A1" />
+                        <path d="M2.4 15.6H1.2L1.2 16.8H2.4V15.6Z" fill="#A1A1A1" />
+                        <path d="M12 15.6H13.2V4.8H12V15.6Z" fill="#A1A1A1" />
+                        <path d="M13.2 2.4V1.2L8.4 1.2V0L4.8 1.04907e-07V1.2H5.24538e-08L1.57361e-07 2.4H13.2Z" fill="#A1A1A1" />
+                        <path d="M12 4.8V3.6H1.2L1.2 4.8H12Z" fill="#A1A1A1" />
+                        <path d="M5.24538e-08 15.6H1.2L1.2 4.8H5.24538e-08V15.6Z" fill="#A1A1A1" />
+                        <path d="M10.8 18V16.8H2.4L2.4 18H10.8Z" fill="#A1A1A1" />
+                        <path d="M12.0002 4.80005H1.2002V15.6H2.4002V16.8H10.8002V15.6H12.0002V4.80005Z" fill="black" />
+                    </svg>
                 </span>
 
                 <span class="open_btn cursor-pointer" @click="openRecording" v-tooltip="'/Play'">
@@ -51,11 +66,19 @@
             </div>
         </div>
         <div class="flex flex-row justify-between items-center w-full">
-            <p style="color: #a6a6a6; font-size: 16px;">>>Cast: <span style="color:#D7DF23;"> {{ truncateText(recording.cast_name, 20) }}
+            <div class="flex flex-col gap-2">
+                <p style="color: #a6a6a6; font-size: 16px;">>>Cast: <span style="color:#D7DF23;"> {{truncateText(recording.cast_name, 20) }}
                     </span></p>
-            <p style="color: #a6a6a6; font-size: 16px;">
-                {{ recording['Start Time (Readable)'].split(' ')[0] }}
-            </p>
+
+                <p style="color: #a6a6a6; font-size: 16px;">>>Size: <span style="color:#D7DF23;">{{ recording['Playback Data']['Playback Size'] }}</span></p>
+            </div>
+            <div class="flex flex-col gap-2">
+                <p class="flex justify-end items-end" style="color: #a6a6a6; font-size: 16px;">
+                    {{ recording['Start Time (Readable)'].split(' ')[0] }}
+                </p>
+
+                <p style="color: #a6a6a6; font-size: 16px;">>>Length: <span style="color:#D7DF23;">{{ recording['Playback Data']['Playback Length'] }} min</span></p>
+            </div>
         </div>
     </div>
 </template>
@@ -77,7 +100,8 @@ export default {
                     '/presentation/2.3',
                     '/video'
                 ) + '/video-0.m4v';
-            window.open(playbackURL, '_blank');
+            // window.open(playbackURL, '_blank');
+            window.open(playbackURL, '_blank', 'width=1366,height=768,scrollbars=yes,resizable=yes');
         },
         copyRecording() {
             navigator.clipboard.writeText(
@@ -91,8 +115,29 @@ export default {
             setTimeout(() => {
                 const meetingId = this.recording['Record ID'];
                 const url = `https://beta.editor.video.wiki/studio?meetingId=${meetingId}`;
-                window.open(url, '_blank');
+                // window.open(url, '_blank');
+                window.open(url, '_blank', 'width=1366,height=768,scrollbars=yes,resizable=yes');
             }, 1000);
+        },
+        async handleDeleteRecording() {
+            const options = {
+                method: 'DELETE',
+                url: 'https://api.cast.decast.live/api/delete/user/recording/',
+                data: {
+                    public_meeting_id: this.recording['pub_id'],
+                    recording_id: this.recording['Record ID'],
+                },
+                headers: {
+                    Authorization: `Bearer ${this.accessToken}`,
+                }
+            };
+            try {
+                await axios.request(options);
+                await this.$store.dispatch('cast/deleteRecording', this.recording['Record ID']);
+                await this.getRecordings();
+            } catch (error) {
+                console.error(error);
+            }
         },
         truncateText(text, maxLength) {
             if (text.length > maxLength) {

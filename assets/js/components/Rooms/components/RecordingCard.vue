@@ -77,8 +77,8 @@ export default {
                     '/presentation/2.3',
                     '/video'
                 ) + '/video-0.m4v';
-            window.open(playbackURL, '_blank');
-        },
+            // window.open(playbackURL, '_blank');
+            window.open(playbackURL, '_blank','width=1366,height=768,scrollbars=yes,resizable=yes');        },
         copyRecording() {
             navigator.clipboard.writeText(
                 this.recording.url['Playback Data']['Playback URL'].replace(
@@ -91,8 +91,8 @@ export default {
             const meetingId = this.recording.url['Record ID'];
             setTimeout(() => {
                 const url = `https://beta.editor.video.wiki/studio?meetingId=${meetingId}`;
-                window.open(url, '_blank');
-            }, 2000);
+                // window.open(url, '_blank');
+                window.open(url, '_blank','width=1366,height=768,scrollbars=yes,resizable=yes');            }, 2000);
         },
     },
 };

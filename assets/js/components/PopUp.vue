@@ -97,7 +97,7 @@
               fill="black" />
           </svg>
         </span>
-        CALLS
+        CALL
       </button>
       <button @click="onCasts" :class="{ 'casts_btn': true, 'cast_clicked': isClicked2 }"
         class="px-4 py-2 text-xl font-bold">
@@ -129,7 +129,7 @@
             <rect x="14.8022" y="11.6917" width="5.43228" height="3.95062" fill="black" />
           </svg>
         </span>
-        CASTS
+        CAST
       </button>
       <button @click="onDecasts" :class="{ 'decast_btn': true, 'decast_clicked': isClicked3 }"
         class="decast_btn px-4 py-2 text-xl font-bold">
@@ -151,7 +151,7 @@
               fill="white" stroke="black" stroke-width="0.666667" />
           </svg>
         </span>
-        DECASTS
+        DECAST
       </button>
     </div>
   </div>

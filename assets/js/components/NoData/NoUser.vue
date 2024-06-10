@@ -45,7 +45,7 @@
                 Welcome to <span style="color:#D7DF23;">Decast</span>, a powerful tool for hosting Casts, your personal and favorite calls in private rooms,
                 and much more. To get started quickly, create or log in to your account on <a href="https://decast.live"
                     target="_blank" class="text-blue-500">Decast.live</a>, then return to activate this extension. For
-                assistance, click 'Next' for easy-to-follow instructions.
+                assistance, click on 'Next' for easy-to-follow instructions.
             </p>
         </div>
 
@@ -72,8 +72,8 @@
 
 <script>
 import slide1 from './components/Slide1.vue';
-import slide2 from './components/slide2.vue';
-import slide3 from './components/slide3.vue';
+import slide2 from './components/Slide2.vue';
+import slide3 from './components/Slide3.vue';
 export default {
     name: 'NoUser',
     data() {
