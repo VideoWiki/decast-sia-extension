@@ -1,4 +1,5 @@
 <template>
+  <StorageModal v-if="showStorageModal" :castDetails="selectedCast" :index="index" @close="closeModal"  :getCastList="getCastList"/>
   <div>
     <p class="font-bold text-2xl">//Decentralized Casts</p>
     <p class="mt-2" style="color: gray; font-size: 16px">
@@ -25,7 +26,7 @@
         <CastCardShimmer :style="{ opacity: 0.5 }" />
       </div>
       <div v-else v-for="(cast, index) in castList" :key="index">
-        <CastCard :castDetails="cast" :index="index" :getCastList="getCastList" />
+        <CastCard :castDetails="cast" :index="index" :getCastList="getCastList" @openModal="openModal(cast)"/>
       </div>
     </div>
     <div v-else class="cast_list_cont">
@@ -76,6 +77,7 @@ import CastCardShimmer from './components/DecastCardShimmer.vue';
 import RecordingCardShimmer from './components/RecordingCardShimmer.vue';
 import RecordingCard from './components/RecordingCard.vue';
 import CastCard from './components/DecastCard.vue';
+import StorageModal from './components/StorageModal.vue';
 export default {
   name: "CastSection",
   data() {
@@ -89,13 +91,16 @@ export default {
       // moment,
       casts: [],
       recordings: [],
+      showStorageModal: false,
+      selectedCast: null,
     };
   },
   components: {
     CastCardShimmer,
     RecordingCardShimmer,
     RecordingCard,
-    CastCard
+    CastCard,
+    StorageModal
   },
   mounted() {
     this.getCastList();
@@ -114,6 +119,17 @@ export default {
     }
   },
   methods: {
+    // handleStartCast(id) {
+    //   this.castList[id].isCastStart = true;
+    //   this.closeModal();
+    // },
+    openModal(cast) {
+      this.selectedCast = cast;
+      this.showStorageModal = true;
+    },
+    closeModal() {
+      this.showStorageModal = false;
+    },
     changeFocus(toYourRooms) {
       this.focusYourRooms = toYourRooms;
     },
@@ -133,7 +149,7 @@ export default {
     async getRecordings() {
       this.isRecordingLoading = true;
       try {
-        const res = await this.$store.dispatch('cast/recordings');
+        const res = await this.$store.dispatch('cast/decastRecordings');
         this.isRecordingLoading = false;
         console.log(res);
       } catch (e) {
@@ -151,7 +167,7 @@ export default {
     async getCastList() {
       this.isCastsLoading = true;
       try {
-        const response = await this.$store.dispatch('cast/getAllCasts');
+        const response = await this.$store.dispatch('cast/getDecasts');
         if (response.data.my_events) {
           const allEvents = response.data.my_events.sort((a, b) => b.event_id - a.event_id);
           this.castList = allEvents;

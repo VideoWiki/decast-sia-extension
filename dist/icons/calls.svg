@@ -1,0 +1,24 @@
+<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18.75 0V1.875H11.25V0H18.75Z" fill="black"/>
+<path d="M22.5 3.75H18.75V1.875H22.5V3.75Z" fill="black"/>
+<path d="M24.375 5.625H22.5V3.75H24.375V5.625Z" fill="black"/>
+<path d="M26.25 7.5H24.375V5.625H26.25V7.5Z" fill="black"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M28.125 11.25H26.25V7.5H28.125V11.25ZM28.125 11.25H30V20.625H28.125V11.25Z" fill="black"/>
+<path d="M9.375 3.75V5.625H1.875V3.75H9.375Z" fill="black"/>
+<path d="M1.875 16.875H0V5.625H1.875V16.875Z" fill="black"/>
+<path d="M3.75 20.625H1.875V16.875H3.75V20.625Z" fill="black"/>
+<path d="M5.625 22.5H3.75V20.625H5.625V22.5Z" fill="black"/>
+<path d="M7.5 24.375H5.625V22.5H7.5V24.375Z" fill="black"/>
+<path d="M9.375 26.25H7.5V24.375H9.375V26.25Z" fill="black"/>
+<path d="M13.125 28.125H9.375V26.25H13.125V28.125Z" fill="black"/>
+<path d="M24.375 28.125V30H13.125V28.125H24.375Z" fill="black"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M18.75 20.625V18.75H24.375V20.625H18.75ZM24.375 20.625H26.25V28.125H24.375V20.625Z" fill="black"/>
+<path d="M16.875 22.5V20.625H18.75V22.5H16.875Z" fill="black"/>
+<path d="M13.125 22.5H16.875V24.375H13.125V22.5Z" fill="black"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M9.375 18.75H11.25V20.625H9.375V18.75ZM11.25 20.625H13.125V22.5H11.25V20.625Z" fill="black"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M7.5 13.125V16.875H5.625V13.125H7.5ZM7.5 16.875H9.375V18.75H7.5V16.875Z" fill="black"/>
+<path d="M9.375 11.25V13.125H7.5V11.25H9.375Z" fill="black"/>
+<path d="M9.375 11.25H11.25V5.625H9.375V11.25Z" fill="black"/>
+<path d="M13.125 5.625V7.5H18.75V9.375H20.625V11.25H22.5V16.875H24.375V11.25H22.5V9.375H20.625V7.5H18.75V5.625H13.125Z" fill="black"/>
+<path d="M1.875 5.625H9.375V11.25H7.5V13.125H5.625V16.875H7.5V18.75H9.375V20.625H11.25V22.5H13.125V24.375H16.875V22.5H18.75V20.625H24.375V28.125H13.125V26.25H9.375V24.375H7.5V22.5H5.625V20.625H3.75V16.875H1.875V5.625Z" fill="white"/>
+</svg>

@@ -25,6 +25,29 @@ export default {
     }
   },
 
+  async getDecasts({ rootState, commit }) {
+    const accessToken = rootState.accessToken;
+    try {
+      const res = await axios.get(constants.apiCastUrl + '/api/event/get/decast/info/', {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      return res;
+    } catch (error) {
+      if (error.response && error.response.status === 403) {
+        commit('setErrorModal', { errorMessage: 'Session expired. Please log in again.' }, { root: true });
+        chrome.storage.local.remove(['accessToken', 'userInfo'], function() {
+          console.log('Session data cleared.');
+          commit('setAccessToken', null);
+          commit('setUserInfo', null);
+        });
+      } else {
+        console.error('Error fetching all casts:', error);
+      }
+    }
+  },
+
   async getOriginalUrl({ rootState, commit }, shortCode) {
     const accessToken = rootState.accessToken;
     try {
@@ -118,6 +141,30 @@ export default {
     const accessToken = rootState.accessToken;
     try {
       const res = await axios.get(constants.apiCastUrl + '/api/event/user/recordings', {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      commit('SET_RECORDINGLIST', res.data.status);
+      return res.data.status;
+    } catch (error) {
+      if (error.response && error.response.status === 403) {
+        commit('setErrorModal', { errorMessage: 'Session expired. Please log in again.' }, { root: true });
+        chrome.storage.local.remove(['accessToken', 'userInfo'], function() {
+          console.log('Session data cleared.');
+          commit('setAccessToken', null);
+          commit('setUserInfo', null);
+        });
+      } else {
+        console.error('Error fetching recordings:', error);
+      }
+    }
+  },
+
+  async decastRecordings({ commit, rootState }) {
+    const accessToken = rootState.accessToken;
+    try {
+      const res = await axios.get(constants.apiCastUrl + '/api/event/user/decast/recordings', {
         headers: {
           'Authorization': `Bearer ${accessToken}`
         }

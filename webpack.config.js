@@ -1,6 +1,6 @@
 const path = require("path");
 const { VueLoaderPlugin } = require("vue-loader");
-
+const webpack = require('webpack');
 module.exports = {
   mode: "development",
   devtool: "inline-source-map",
@@ -37,7 +37,22 @@ module.exports = {
     ],
   },
   resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'assets'),
+    },
     extensions: [".js", ".vue"],
+    fallback: {
+      "http": require.resolve("stream-http"),
+      "https": require.resolve("https-browserify"),
+      "os": require.resolve("os-browserify/browser"),
+      "stream": require.resolve("stream-browserify"),
+    },
   },
-  plugins: [new VueLoaderPlugin()],
+  plugins: [
+    new VueLoaderPlugin(),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+      Buffer: ['buffer', 'Buffer'],
+    }),
+  ],
 };

@@ -32,3 +32,6 @@ chrome.runtime.sendMessage({ action: 'getLocalStorage' }, function(response) {
     console.error('Invalid response:', response);
   }
 });
+
+
+

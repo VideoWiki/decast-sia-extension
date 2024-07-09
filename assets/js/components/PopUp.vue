@@ -9,9 +9,9 @@
         </div>
 
         <div class="basic_child_2">
-          <img src="../../images/settings.svg" />
+          <img src="../../images/settings.svg"/>
         </div>
-      </div>
+      </div>  
 
       <div class="parent_2">
         <div class="basic_child_3"></div>
@@ -24,6 +24,8 @@
     </div>
   </div>
 
+
+
   <div v-else class="parent_app_">
     <div class="basic_parent_div">
       <!-- header section -->
@@ -34,7 +36,7 @@
         </div>
 
         <div class="basic_child_2">
-          <img src="../../images/settings.svg" />
+          <img src="../../images/settings.svg" v-tooltip.left="'/My Profile'" class="cursor-pointer" @click="onProfile"/>
         </div>
       </div>
 
@@ -48,6 +50,7 @@
 
       <div class="parent_3 p-4">
         <ErrorModal :errorMessage="$store.state.errorMessage" :showModal="$store.state.showModal" @close="$store.commit('closeErrorModal')" />
+        <UserInfo v-if="showProfile" :showProfile="this.showProfile" @close="this.showProfile=false"/>
         <RoomSection v-if="rooms" />
         <CastSection v-if="casts" />
         <DecastSection v-if="decasts" />
@@ -163,6 +166,7 @@ import CastSection from "./Casts/CastSection.vue";
 import DecastSection from "./Decasts/DecastSection.vue";
 import NoUser from "./NoData/NoUser.vue";
 import ErrorModal from '../../common/SessionExpired.vue';
+import UserInfo from './User/UserInfo.vue';
 import "../../css/popup.css";
 export default {
   name: "PopUp",
@@ -171,7 +175,8 @@ export default {
     CastSection,
     DecastSection,
     NoUser,
-    ErrorModal
+    ErrorModal,
+    UserInfo
   },
   data() {
     return {
@@ -183,6 +188,7 @@ export default {
       isClicked1: true,
       isClicked2: false,
       isClicked3: false,
+      showProfile:false,
     };
   },
   computed: {
@@ -197,6 +203,9 @@ export default {
     // },
   },
   methods: {
+    onProfile(){
+      this.showProfile=true;
+    },
     onRoom() {
       this.casts = false;
       this.decasts = false;
