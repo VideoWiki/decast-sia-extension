@@ -43,8 +43,8 @@
                     </h2>
 
                     <div class="flex flex-col gap-2">
-                        <p class="text-grey-light text-lg" style="color: #22c55e;">Minutes</p>
-                        <p class="text-2xl font-semibold text-white">70.5</p>
+                        <p class="text-grey-light text-lg" style="color: #22c55e;">Storage</p>
+                        <p class="text-2xl font-semibold text-white">70.5 <span class="text-lg font-normal">MB</span></p>
                     </div>
                 </div>
 
@@ -71,7 +71,7 @@
 import storages from './storage.js';
 import DownButton from '../../../../common/DownButton.vue'
 import constants from '../../../constant.js';
-import axios from 'axios'; // Ensure Axios is imported
+import axios from 'axios'; 
 
 export default {
     name: "StorageModal",
