@@ -3,11 +3,14 @@ import store from './store/index.js';
 import PopUp from './components/PopUp.vue';
 import FloatingVue from 'floating-vue'
 import 'floating-vue/dist/style.css';
+import Vuesax from 'vuesax3'
+import 'vuesax3/dist/vuesax.css'
 const app = createApp({
   render: () => h(PopUp)
 });
 
 app.use(store);
+app.use(Vuesax);
 app.use(FloatingVue);
 app.mount('#app');
 

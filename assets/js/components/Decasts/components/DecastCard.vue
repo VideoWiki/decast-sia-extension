@@ -15,7 +15,7 @@
 
                 <div class="cursor-pointer">
                     <span v-if="castDetails.is_running === 'false' && !isCastStart" @click="openModal"
-                        v-tooltip="'/Choose Storage'">
+                        v-tooltip="'/storage.select'">
                         <StartButton />
                     </span>
                     <!-- @click="joinNow(castDetails.public_meeting_id)" -->

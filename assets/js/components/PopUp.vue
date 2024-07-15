@@ -9,9 +9,9 @@
         </div>
 
         <div class="basic_child_2">
-          <img src="../../images/settings.svg"/>
+          <img src="../../images/settings.svg" />
         </div>
-      </div>  
+      </div>
 
       <div class="parent_2">
         <div class="basic_child_3"></div>
@@ -19,7 +19,7 @@
       </div>
 
       <div class="parent_nouser">
-        <NoUser/>
+        <NoUser />
       </div>
     </div>
   </div>
@@ -35,8 +35,25 @@
           <p>{{ userInfo.first_name }} {{ userInfo.last_name }}</p>
         </div>
 
-        <div class="basic_child_2">
-          <img src="../../images/settings.svg" v-tooltip.left="'/My Profile'" class="cursor-pointer" @click="onProfile"/>
+        <div class="basic_child_2 flex items-center justify-end gap-8">
+          <div class="flex flex-row">
+            <p class="text-lg flex flex-row gap-2 items-center justify-end">{{ normalPrice.price }} gwei
+              <span class="reload cursor-pointer" @click="getGasPrices">
+                <svg class="reload-icon" fill="#ffffff" width="20px" height="20px" viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                  <g id="SVGRepo_iconCarrier">
+                    <path d="M14.66 15.66A8 8 0 1 1 17 10h-2a6 6 0 1 0-1.76 4.24l1.42 1.42zM12 10h8l-4 4-4-4z"></path>
+                  </g>
+                </svg>
+              </span>
+
+            </p>
+            <!-- <p class="text-md">{{ normalPrice.maxPriorityFeePerGas }} $</p> -->
+          </div>
+          <img src="../../images/settings.svg" v-tooltip.left="'/My Profile'" class="cursor-pointer"
+            @click="onProfile" />
         </div>
       </div>
 
@@ -49,8 +66,9 @@
       <!-- calls section  -->
 
       <div class="parent_3 p-4">
-        <ErrorModal :errorMessage="$store.state.errorMessage" :showModal="$store.state.showModal" @close="$store.commit('closeErrorModal')" />
-        <UserInfo v-if="showProfile" :showProfile="this.showProfile" @close="this.showProfile=false"/>
+        <ErrorModal :errorMessage="$store.state.errorMessage" :showModal="$store.state.showModal"
+          @close="$store.commit('closeErrorModal')" />
+        <UserInfo v-if="showProfile" :showProfile="this.showProfile" @close="this.showProfile = false" />
         <RoomSection v-if="rooms" />
         <CastSection v-if="casts" />
         <DecastSection v-if="decasts" />
@@ -168,6 +186,8 @@ import NoUser from "./NoData/NoUser.vue";
 import ErrorModal from '../../common/SessionExpired.vue';
 import UserInfo from './User/UserInfo.vue';
 import "../../css/popup.css";
+import axios from "axios";
+
 export default {
   name: "PopUp",
   components: {
@@ -188,7 +208,24 @@ export default {
       isClicked1: true,
       isClicked2: false,
       isClicked3: false,
-      showProfile:false,
+      showProfile: false,
+      fastPrice: '',
+      slowPrice: '',
+      normalPrice: '',
+      hasOpenLoading: false,
+      types: [
+        'default',
+        'waves',
+        'corners',
+        'border',
+        'points',
+        'square',
+        'gradient',
+        'rectangle',
+        'circles',
+        'square-rotate',
+        'scale'
+      ]
     };
   },
   computed: {
@@ -202,9 +239,12 @@ export default {
     //   return this.userInfo.first_name;
     // },
   },
+  async mounted() {
+    await this.getGasPrices();
+  },
   methods: {
-    onProfile(){
-      this.showProfile=true;
+    onProfile() {
+      this.showProfile = true;
     },
     onRoom() {
       this.casts = false;
@@ -232,15 +272,42 @@ export default {
       this.isClicked1 = false;
       this.isClicked3 = true;
     },
+    async getGasPrices() {
+      this.hasOpenLoading = true;
+      const apiKey = '';
+      const url = 'https://api.blocknative.com/gasprices/blockprices?confidenceLevels=99&confidenceLevels=90&confidenceLevels=80&confidenceLevels=60';
+
+      try {
+        const response = await axios.get(url);
+
+        if (response.data && response.data.blockPrices) {
+          const blockPrices = response.data.blockPrices[0].estimatedPrices;
+
+          this.fastPrice = blockPrices.find(price => price.confidence === 99);
+          this.normalPrice = blockPrices.find(price => price.confidence === 90);
+          this.slowPrice = blockPrices.find(price => price.confidence === 80);
+
+          console.log('Fast Gas Price:', this.fastPrice.maxFeePerGas, 'Gwei');
+          console.log('Normal Gas Price:', this.normalPrice.maxFeePerGas, 'Gwei');
+          console.log('Slow Gas Price:', this.slowPrice.maxFeePerGas, 'Gwei');
+        } else {
+          console.log('No gas price data available');
+        }
+      } catch (error) {
+        console.error('Error fetching gas prices:', error);
+      } finally {
+        this.hasOpenLoading = false;
+      }
+    }
   },
 };
 </script>
 
 <style scoped>
- * {
-    font-family: 'JetBrains Mono', monospace !important;
-  }
-  
+* {
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
 .parent_app_ {
   width: 500px;
   height: 600px;
@@ -371,4 +438,23 @@ export default {
 .decast_clicked svg path {
   fill: white !important;
 }
+
+.reload:active .reload-icon path {
+  fill: #d7df23;
+}
+
+.reload:active{
+  animation: rotateIcon 0.5s linear;
+  transform-origin: center;
+  transition-delay: 0.3s;
+  transition: 0.5s ease-in-out;
+}
+
+@keyframes rotateIcon {
+  100% {
+    transform: rotate(720deg);
+  }
+}
+
+
 </style>

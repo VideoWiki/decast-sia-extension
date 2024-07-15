@@ -9,9 +9,14 @@
                     <CopyButton />
                 </span>
 
-                <span v-if="recording.swarm_uploaded === false && recording.sia_uploaded === false"
+                <!-- <span v-if="recording.swarm_uploaded === false && recording.sia_uploaded === false"
                     class="edit_btn cursor-pointer" @click="handleDeleteRecording" v-tooltip="'/Delete'">
                     <DeleteButton />
+                </span> -->
+
+                <span
+                    class="down_btn cursor-pointer" @click="handleDownloadRecording" v-tooltip="'/Download'">
+                    <DownloadButton />
                 </span>
 
                 <span v-if="recording.swarm_uploaded === false && recording.sia_uploaded === false" @click="handleSelect"
@@ -47,7 +52,7 @@
                 </span>
 
 
-                <span class="open_btn cursor-pointer" @click="sendTransaction" v-tooltip="'/Play'">
+                <span class="open_btn cursor-pointer" @click="openRecording" v-tooltip="'/Play'">
                     <StartButton />
                 </span>
             </div>
@@ -124,6 +129,7 @@ import CopyButton from "../../../../common/CopyButton.vue";
 import StartButton from "../../../../common/StartButton.vue";
 import DeleteButton from "../../../../common/DeleteButton.vue";
 import axios from "axios";
+import DownloadButton from "../../../../common/DownloadButton.vue";
 export default {
     name: "RecordingCard",
     props: ["recording", "index", "getRecordings"],
@@ -136,6 +142,7 @@ export default {
         CopyButton,
         StartButton,
         DeleteButton,
+        DownloadButton
     },
     computed: {
         accessToken() {
@@ -194,6 +201,10 @@ export default {
         //         // Handle error
         //     }
         // },
+
+        handleDownloadRecording(){
+
+        },
 
         async handleSwarmUpload() {
             const videoURL =

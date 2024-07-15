@@ -30,6 +30,8 @@
     "process": "^0.11.10",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
+    "vuesax": "^3.12.2",
+    "vuesax3": "^4.2.1",
     "vuex": "^4.1.0",
     "web3": "^4.9.0",
     "web3modal": "^1.9.12"

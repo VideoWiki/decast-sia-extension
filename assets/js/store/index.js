@@ -1,6 +1,8 @@
 import { createStore } from 'vuex';
 import moduleRoom from './room/moduleRoom';
 import moduleCast from './cast/moduleCast';
+import moduleAuth from './auth/moduleAuth';
+
 const store = createStore({
   state() {
     return {
@@ -37,6 +39,7 @@ const store = createStore({
   modules:{
     room: moduleRoom,
     cast: moduleCast,
+    auth: moduleAuth,
   }
 });
 

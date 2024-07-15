@@ -1,17 +1,12 @@
 <template>
     <div class="modal" v-if="castDetails">
         <div class="modal-content h-full flex flex-col gap-4 justify-start items-center pt-4">
-            <!-- <div class="relative w-full flex justify-end">
-                <span class="close text-xl font-bold text-red-500 text-center" @click="closeModal">X</span>
-            </div> -->
-
-            <div
-                class="basic_child_modal_ flex flex-col gap-4 justify-start items-center w-full pl-4 pr-4 pb-4 text-left">
-                <p class="heading_basic_ text-white pt-2 pb-2">
-                    Select the network where you want to store your Decast recordings.
+            <div class="basic_child_modal_ flex flex-col gap-4 justify-start items-center w-full pl-4 pr-4 pb-4 text-left">
+                <p class="heading_basic_ pt-2 pb-2">
+                    >>Select the network where you want to store your Decast recordings.
                 </p>
 
-                <label for="storage-select" class="text-left text-lg text-white w-full">//Storage.Select</label>
+                <label for="storage-select" class="text-left text-lg text-white w-full">//storage.select</label>
                 <div class="relative w-full">
                     <div @click="toggleDropdown"
                         class="h-12 w-full p-2 text-lg outline-none bg-black text-white flex justify-between items-center cursor-pointer storage-select">
@@ -26,14 +21,13 @@
                     <div v-if="isOpen" class="absolute w-full bg-black text-white z-10">
                         <div v-for="(storage, name) in storages" :key="name" @click="selectStorage(name)"
                             class="storage_opt_ p-2 h-12 flex gap-4 items-center justify-start cursor-pointer text-lg hover:bg-gray-800 hover:text-green-500">
-                            <img class="w-8 h-8 object-contain rounded-full" :src="getImagePath(storage.icon)" />
+                            <img class="w-8 h-8 object-contain" :src="getImagePath(storage.icon)"/>
                             <span >{{ storage.desc }}</span>
                         </div>
                     </div>
                 </div>
                 <div class="basic_wallet_container__ w-full flex flex-col mt-2 gap-4 p-4 pb-4">
                     <h2 class="text-white font-bold text-xl flex justify-between items-center">//Wallet Balance
-
                         <span><svg width="25px" height="25px" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -50,7 +44,7 @@
 
                     <div class="flex flex-col gap-2">
                         <p class="text-grey-light text-lg" style="color: #22c55e;">Minutes</p>
-                        <p class="text-2xl font-semibold text-white">37.5</p>
+                        <p class="text-2xl font-semibold text-white">70.5</p>
                     </div>
                 </div>
 
@@ -76,6 +70,9 @@
 <script>
 import storages from './storage.js';
 import DownButton from '../../../../common/DownButton.vue'
+import constants from '../../../constant.js';
+import axios from 'axios'; // Ensure Axios is imported
+
 export default {
     name: "StorageModal",
     props: ['castDetails', 'index','getCastList'],
@@ -123,18 +120,38 @@ export default {
             };
             try {
                 const res = await this.$store.dispatch('cast/joinNow', data);
-                // this.isCastStart = true;
-                // window.open(res.url, '_blank');
                 window.open(res.url, '_blank', 'width=1366,height=768,scrollbars=yes,resizable=yes');
+                await this.updateStorageBackend(id); 
                 this.getCastList();
                 this.closeModal();
             } catch (e) {
                 console.log('error', e);
             }
         },
+        async updateStorageBackend(castId) {
+            const token = this.$store.state.accessToken; 
+            const storageParams = {
+                cast_id: castId,
+                Sia: this.selectedStorage === 'Sia',
+                Swarm: this.selectedStorage === 'Swarm',
+            };
+            const url = `${constants.apiCastUrl}/api/event/select/storage/`;
+            
+            try {
+                const response = await axios.post(url, storageParams, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                console.log('Storage updated successfully:', response.data);
+            } catch (error) {
+                console.error('Error updating storage:', error);
+            }
+        },
     }
 }
 </script>
+
 
 <style scoped>
 * {
