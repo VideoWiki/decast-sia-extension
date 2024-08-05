@@ -1,7 +1,11 @@
 <template>
     <div class="modal" v-if="castDetails">
+        <div v-if="loading">
+            <CommonLoader />
+        </div>
         <div class="modal-content h-full flex flex-col gap-4 justify-start items-center pt-4">
-            <div class="basic_child_modal_ flex flex-col gap-4 justify-start items-center w-full pl-4 pr-4 pb-4 text-left">
+            <div
+                class="basic_child_modal_ flex flex-col gap-4 justify-start items-center w-full pl-4 pr-4 pb-4 text-left">
                 <p class="heading_basic_ pt-2 pb-2">
                     >>Select the network where you want to store your Decast recordings.
                 </p>
@@ -11,8 +15,9 @@
                     <div @click="toggleDropdown"
                         class="h-12 w-full p-2 text-lg outline-none bg-black text-white flex justify-between items-center cursor-pointer storage-select">
                         <div class="flex gap-4 items-center justify-start">
-                            <img v-if="selectedStorage" :src="getImagePath(storages[selectedStorage].icon)" class="w-8 h-8 object-contain" alt="icon">
-                        <span>{{ selectedStorage ? storages[selectedStorage].desc : 'Select Storage' }}</span>
+                            <img v-if="selectedStorage" :src="getImagePath(storages[selectedStorage].icon)"
+                                class="w-8 h-8 object-contain" alt="icon">
+                            <span>{{ selectedStorage ? storages[selectedStorage].desc : 'Select Storage' }}</span>
                         </div>
                         <span>
                             <DownButton />
@@ -21,8 +26,8 @@
                     <div v-if="isOpen" class="absolute w-full bg-black text-white z-10">
                         <div v-for="(storage, name) in storages" :key="name" @click="selectStorage(name)"
                             class="storage_opt_ p-2 h-12 flex gap-4 items-center justify-start cursor-pointer text-lg hover:bg-gray-800 hover:text-green-500">
-                            <img class="w-8 h-8 object-contain" :src="getImagePath(storage.icon)"/>
-                            <span >{{ storage.desc }}</span>
+                            <img class="w-8 h-8 object-contain" :src="getImagePath(storage.icon)" />
+                            <span>{{ storage.desc }}</span>
                         </div>
                     </div>
                 </div>
@@ -44,11 +49,17 @@
 
                     <div class="flex flex-col gap-2">
                         <p class="text-grey-light text-lg" style="color: #22c55e;">Storage</p>
-                        <p class="text-2xl font-semibold text-white">70.5 <span class="text-lg font-normal">MB</span></p>
+                        <p class="text-2xl font-semibold text-white"
+                            v-if="swarmFreeGiven === true && selectedStorage == 'Swarm'">{{ swarmMinutes }}<span
+                                class="text-lg font-normal">Minutes</span></p>
+                        <p class="text-2xl font-semibold text-white"
+                            v-else-if="siaFreeGiven === true && selectedStorage == 'Sia'">{{ siaMinutes }}<span
+                                class="text-lg font-normal">Minutes</span>
+                        </p>
                     </div>
                 </div>
 
-                <div class="w-full flex border-b border-white pb-6">
+                <div class="w-full flex border-b border-white pb-6" @click="redirectToAddFunds">
                     <button
                         class="add_funds_btn bg-white text-black flex gap-2 justify-center items-center text-lg p-2">
                         <img src="../../../../images/coin.svg" alt="coin"> Add Minutes
@@ -59,8 +70,9 @@
                     <button
                         class="basic_start_btn_ w-1/2 p-2 text-lg bg-white text-black flex items-center justify-center gap-2 disabled:opacity-80 disabled:cursor-not-allowed"
                         @click="joinNow(castDetails.public_meeting_id)" :disabled="!selectedStorage">
-                        <img src="@/images/start.png" alt="" >Start Decast</button>
-                    <button class="cancel_btn_ w-1/2 p-2 text-lg bg-black text-red-500" @click="closeModal">Cancel</button>
+                        <img src="@/images/start.png" alt="">Start Decast</button>
+                    <button class="cancel_btn_ w-1/2 p-2 text-lg bg-black text-red-500"
+                        @click="closeModal">Cancel</button>
                 </div>
             </div>
         </div>
@@ -71,24 +83,46 @@
 import storages from './storage.js';
 import DownButton from '../../../../common/DownButton.vue'
 import constants from '../../../constant.js';
-import axios from 'axios'; 
+import axios from 'axios';
+import CommonLoader from '../../../../common/CommonLoader.vue';
 
 export default {
     name: "StorageModal",
-    props: ['castDetails', 'index','getCastList'],
+    props: ['castDetails', 'index', 'getCastList'],
     data() {
         return {
             storages,
             selectedStorage: '',
             isOpen: false,
-            isCastStart:false,
+            isCastStart: false,
+            loading: false,
+            preSelected: false,
         }
     },
     mounted() {
         console.log(this.castDetails, 'index');
+        this.getSelectedStorage();
     },
     components: {
-        DownButton
+        DownButton,
+        CommonLoader
+    },
+    created() {
+        this.$store.dispatch('fetchUserMinutes');
+    },
+    computed: {
+        siaMinutes() {
+            return this.$store.state.siaMinutes;
+        },
+        siaFreeGiven() {
+            return this.$store.state.siaFreeGiven;
+        },
+        swarmMinutes() {
+            return this.$store.state.swarmMinutes;
+        },
+        swarmFreeGiven() {
+            return this.$store.state.swarmFreeGiven;
+        },
     },
     methods: {
         closeModal() {
@@ -98,12 +132,19 @@ export default {
             return require(`@/images/${image}`).default;
         },
         toggleDropdown() {
-            this.isOpen = !this.isOpen;
+            console.log(this.selectedStorage, 'doro')
+            if (this.selectedStorage == '') {
+                this.isOpen = !this.isOpen;
+            }
         },
         selectStorage(name) {
             this.selectedStorage = name;
             this.isOpen = false;
             this.$emit('input', name);
+        },
+        redirectToAddFunds() {
+            console.log('func call')
+            window.open("https://decast.live/addfunds", "_blank");
         },
         async joinNow(id) {
             const data = {
@@ -119,33 +160,72 @@ export default {
                 meetingId: '',
             };
             try {
+                this.loading = true;
                 const res = await this.$store.dispatch('cast/joinNow', data);
+                chrome.runtime.sendMessage({ action: 'updateBadge', badgeType: 'cast' });
                 window.open(res.url, '_blank', 'width=1366,height=768,scrollbars=yes,resizable=yes');
-                await this.updateStorageBackend(id); 
+                await this.updateStorageBackend(id);
+                this.loading = false;
                 this.getCastList();
                 this.closeModal();
             } catch (e) {
+                this.loading = false;
                 console.log('error', e);
             }
         },
-        async updateStorageBackend(castId) {
-            const token = this.$store.state.accessToken; 
-            const storageParams = {
-                cast_id: castId,
-                Sia: this.selectedStorage === 'Sia',
-                Swarm: this.selectedStorage === 'Swarm',
-            };
-            const url = `${constants.apiCastUrl}/api/event/select/storage/`;
-            
+        async getSelectedStorage() {
+            const token = this.$store.state.accessToken;
+            const cast_id = this.castDetails.public_meeting_id;
+            console.log(token, cast_id, 'llllllllllll');
+            const url = `${constants.apiCastUrl}/api/event/select/storage/?cast_id=${cast_id}`;
+
             try {
-                const response = await axios.post(url, storageParams, {
+                this.loading = true;
+                const response = await axios.get(url, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                console.log('Storage updated successfully:', response.data);
+                console.log('Storage retrived successfully:', response.data);
+
+                if (response.data.SIA == true && response.data.SWARM == false) {
+                    console.log(response.data.SIA, response.data.SWARM, 'cjdkunn')
+                    this.selectedStorage = 'Sia';
+                    this.preSelected = true;
+                } else if (response.data.SIA == false && response.data.SWARM == true) {
+                    console.log(response.data.SIA, response.data.SWARM, 'cjdkunn')
+                    this.selectedStorage = 'Swarm';
+                    this.preSelected = true;
+                } else if (response.data.SIA == false && response.data.SWARM == false) {
+                    console.log(response.data.SIA, response.data.SWARM, 'cjdkunn')
+                    this.selectedStorage = '';
+                }
+                this.loading = false;
             } catch (error) {
-                console.error('Error updating storage:', error);
+                this.loading = false;
+                console.error('Error:', error);
+            }
+        },
+        async updateStorageBackend(castId) {
+            if (this.preSelected === false) {
+                const token = this.$store.state.accessToken;
+                const storageParams = {
+                    cast_id: castId,
+                    Sia: this.selectedStorage === 'Sia',
+                    Swarm: this.selectedStorage === 'Swarm',
+                };
+                const url = `${constants.apiCastUrl}/api/event/select/storage/`;
+
+                try {
+                    const response = await axios.post(url, storageParams, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                    console.log('Storage updated successfully:', response.data);
+                } catch (error) {
+                    console.error('Error updating storage:', error);
+                }
             }
         },
     }

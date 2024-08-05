@@ -113,6 +113,7 @@ export default {
             try {
                 const res = await this.$store.dispatch('cast/joinNow', data);
                 this.isCastStart = true;
+                chrome.runtime.sendMessage({ action: 'updateBadge', badgeType: 'cast' });
                 // window.open(res.url, '_blank');
                 window.open(res.url, '_blank', 'width=1366,height=768,scrollbars=yes,resizable=yes');
             } catch (e) {

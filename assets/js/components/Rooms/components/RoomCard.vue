@@ -80,6 +80,7 @@ export default {
                 .dispatch('room/start', id)
                 .then((res) => {
                     this.isRoomStart = true;
+                    chrome.runtime.sendMessage({ action: 'updateBadge', badgeType: 'cast' });
                     // window.open(res.data.room_url, '_blank');
                     window.open(res.data.room_url, '_blank', 'width=1366,height=768,scrollbars=yes,resizable=yes');
                 })

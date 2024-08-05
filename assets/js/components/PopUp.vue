@@ -37,8 +37,9 @@
 
         <div class="basic_child_2 flex items-center justify-end gap-8">
           <div class="flex flex-row">
-            <p class="text-lg flex flex-row gap-2 items-center justify-end">{{ normalPrice.price }} gwei
-              <span class="reload cursor-pointer" @click="getGasPrices">
+            <p class="text-lg flex flex-row gap-2 items-center justify-end">{{ normalPrice.price }} <span
+                class="text-md">gwei</span>
+              <span class="reload cursor-pointer" @click="getGasPricesFromStorage">
                 <svg class="reload-icon" fill="#ffffff" width="20px" height="20px" viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg">
                   <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -48,7 +49,6 @@
                   </g>
                 </svg>
               </span>
-
             </p>
             <!-- <p class="text-md">{{ normalPrice.maxPriorityFeePerGas }} $</p> -->
           </div>
@@ -138,7 +138,7 @@
             <path d="M35.2971 4.7774H33.0748V9.22184H35.2971V4.7774Z" fill="white" />
             <path
               d="M11.3457 6.75328H15.7903V20.0866H11.3457V22.3088H6.90109V24.5311H2.4565V2.30884H6.90109V4.53106H11.3457V6.75328Z"
-              fill="black" />
+              fill="white" />
             <path d="M7.1473 24.7777V26.9999H2.70271V24.7777H7.1473Z" fill="white" />
             <path d="M11.5919 22.5555V24.7777H7.1473V22.5555H11.5919Z" fill="white" />
             <path d="M16.0365 20.3333V22.5555H11.5919V20.3333H16.0365Z" fill="white" />
@@ -213,6 +213,7 @@ export default {
       slowPrice: '',
       normalPrice: '',
       hasOpenLoading: false,
+      gasPriceInterval: '',
       types: [
         'default',
         'waves',
@@ -240,7 +241,15 @@ export default {
     // },
   },
   async mounted() {
-    await this.getGasPrices();
+    // await this.getGasPrices();
+    // this.startGasPriceInterval();
+
+    await this.getGasPricesFromStorage();
+    chrome.runtime.onMessage.addListener((message) => {
+      if (message.action === 'updateGasPrices') {
+        this.getGasPricesFromStorage();
+      }
+    });
   },
   methods: {
     onProfile() {
@@ -272,33 +281,54 @@ export default {
       this.isClicked1 = false;
       this.isClicked3 = true;
     },
-    async getGasPrices() {
-      this.hasOpenLoading = true;
-      const apiKey = '';
-      const url = 'https://api.blocknative.com/gasprices/blockprices?confidenceLevels=99&confidenceLevels=90&confidenceLevels=80&confidenceLevels=60';
+    async getGasPricesFromStorage() {
+            this.hasOpenLoading = true;
+            chrome.storage.local.get('gasPrices', (result) => {
+                if (result.gasPrices) {
+                    this.fastPrice = result.gasPrices.find(price => price.confidence === 99);
+                    this.normalPrice = result.gasPrices.find(price => price.confidence === 90);
+                    this.slowPrice = result.gasPrices.find(price => price.confidence === 80);
+                } else {
+                    console.log('No gas price data available');
+                }
+                this.hasOpenLoading = false;
+            });
+        },
+    //   async getGasPrices() {
+    //     this.hasOpenLoading = true;
+    //     const apiKey = '';
+    //     const url = 'https://api.blocknative.com/gasprices/blockprices?confidenceLevels=99&confidenceLevels=90&confidenceLevels=80&confidenceLevels=60';
 
-      try {
-        const response = await axios.get(url);
+    //     try {
+    //       const response = await axios.get(url);
 
-        if (response.data && response.data.blockPrices) {
-          const blockPrices = response.data.blockPrices[0].estimatedPrices;
+    //       if (response.data && response.data.blockPrices) {
+    //         const blockPrices = response.data.blockPrices[0].estimatedPrices;
 
-          this.fastPrice = blockPrices.find(price => price.confidence === 99);
-          this.normalPrice = blockPrices.find(price => price.confidence === 90);
-          this.slowPrice = blockPrices.find(price => price.confidence === 80);
+    //         this.fastPrice = blockPrices.find(price => price.confidence === 99);
+    //         this.normalPrice = blockPrices.find(price => price.confidence === 90);
+    //         this.slowPrice = blockPrices.find(price => price.confidence === 80);
 
-          console.log('Fast Gas Price:', this.fastPrice.maxFeePerGas, 'Gwei');
-          console.log('Normal Gas Price:', this.normalPrice.maxFeePerGas, 'Gwei');
-          console.log('Slow Gas Price:', this.slowPrice.maxFeePerGas, 'Gwei');
-        } else {
-          console.log('No gas price data available');
-        }
-      } catch (error) {
-        console.error('Error fetching gas prices:', error);
-      } finally {
-        this.hasOpenLoading = false;
-      }
-    }
+    //         console.log('Fast Gas Price:', this.fastPrice.maxFeePerGas, 'Gwei');
+    //         console.log('Normal Gas Price:', this.normalPrice.maxFeePerGas, 'Gwei');
+    //         console.log('Slow Gas Price:', this.slowPrice.maxFeePerGas, 'Gwei');
+    //       } else {
+    //         console.log('No gas price data available');
+    //       }
+    //     } catch (error) {
+    //       console.error('Error fetching gas prices:', error);
+    //     } finally {
+    //       this.hasOpenLoading = false;
+    //     }
+    //   },
+    //   startGasPriceInterval() {
+    //     this.gasPriceInterval = setInterval(async () => {
+    //       await this.getGasPrices();
+    //     }, 90000); 
+    //   },
+    //   beforeDestroy() {
+    //   clearInterval(this.gasPriceInterval);
+    // },
   },
 };
 </script>
@@ -443,7 +473,7 @@ export default {
   fill: #d7df23;
 }
 
-.reload:active{
+.reload:active {
   animation: rotateIcon 0.5s linear;
   transform-origin: center;
   transition-delay: 0.3s;
@@ -455,6 +485,4 @@ export default {
     transform: rotate(720deg);
   }
 }
-
-
 </style>
