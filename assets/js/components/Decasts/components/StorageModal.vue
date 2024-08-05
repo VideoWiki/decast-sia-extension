@@ -56,6 +56,9 @@
                             v-else-if="siaFreeGiven === true && selectedStorage == 'Sia'">{{ siaMinutes }}<span
                                 class="text-lg font-normal">Minutes</span>
                         </p>
+                        <p class="text-2xl font-semibold text-white" v-else>0<span
+                                class="text-lg font-normal">Minutes</span>
+                        </p>
                     </div>
                 </div>
 

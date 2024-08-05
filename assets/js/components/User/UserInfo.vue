@@ -55,11 +55,11 @@
                         placeholder="user.email" :readonly="!isEditing" />
                     <span class="error text-red-500 mt-1" v-if="error.email">{{ error.email }}</span>
                 </div>
-                <div class="w-full flex flex-col gap-2 ">
+                <!-- <div class="w-full flex flex-col gap-2 ">
                     <label class="text-white text-left">user.balance</label>
                     <input class="w-full p-1 pl-2 pr-2 outline-none text-white bg-black" v-model="empty" value="null"
                         placeholder="wallet.balance" :readonly="!isEditing" />
-                </div>
+                </div> -->
 
                 <div class="edit-cont w-full flex mt-4">
                     <button @click="editProfile" :disabled="isEditing"
