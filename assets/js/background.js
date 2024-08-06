@@ -64,16 +64,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
       } else{
         fetchGasPrices();
       }
-    }
-//   if (message.action === "updateBadge") {
-//     if (message.badgeType === "cast") {
-//       updateBadge(message.badgeType);
-//       fetchGasPrices(); 
-//     }else{
-//         fetchGasPrices(); 
-//     }
-//   }
-   
+    }   
 });
 
 // Listening for external messages from the content script
@@ -83,11 +74,8 @@ chrome.runtime.onMessageExternal.addListener(function (
   sendResponse
 ) {
   if (message.action === "getLocalStorage") {
-    // Retrieve data from localStorage
     const accessToken = localStorage.getItem("accessToken");
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-
-    // Sending the data back to the background script
     sendResponse({ accessToken, userInfo });
   }
 });
@@ -114,10 +102,7 @@ async function fetchGasPrices() {
       if (normalPrice) {
         const gasPrice = normalPrice.price;
         updateBadge(gasPrice);
-        // Store gas prices in chrome.storage.local
         chrome.storage.local.set({ gasPrices: blockPrices });
-
-        // Notify popup about the update
         chrome.runtime.sendMessage({ action: "updateGasPrices" });
       }
     } else {
@@ -133,19 +118,8 @@ function updateBadge(gasPrice) {
   chrome.action.setBadgeBackgroundColor({ color: "#ffffff" });
 }
 
-// function updateBadge(badgeType, gasPrice) {
-//     if (badgeType === 'gas') {
-//       chrome.action.setBadgeText({ text: gasPrice.toString() });
-//       chrome.action.setBadgeBackgroundColor({ color: "#ffffff" }); 
-//     } else if (badgeType === 'cast') {
-//       chrome.action.setBadgeText({ text: gasPrice.toString() });
-//       chrome.action.setBadgeBackgroundColor({ color: "#ff0000" }); 
-//     }
-//   }
-
 function setCastBadge() {
   chrome.action.setBadgeBackgroundColor({ color: "#ff0000" });
-  // chrome.action.setBadgeTextColor({ color: "#ffffff" });
 }
 
 

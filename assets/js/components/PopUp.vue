@@ -200,8 +200,6 @@ export default {
   },
   data() {
     return {
-      // accessToken: "",
-      // userInfo: {},
       rooms: true,
       casts: false,
       decasts: false,
