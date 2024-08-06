@@ -136,7 +136,7 @@ export default {
         },
         toggleDropdown() {
             console.log(this.selectedStorage, 'doro')
-            if (this.selectedStorage == '') {
+            if (this.preSelected == false) {
                 this.isOpen = !this.isOpen;
             }
         },

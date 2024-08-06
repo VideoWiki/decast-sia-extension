@@ -164,9 +164,24 @@ export default {
         DownloadButton,
         CommonLoader,
     },
+    created() {
+        this.$store.dispatch('fetchUserMinutes');
+    },
     computed: {
         accessToken() {
             return this.$store.state.accessToken;
+        },
+        siaMinutes() {
+            return this.$store.state.siaMinutes;
+        },
+        siaFreeGiven() {
+            return this.$store.state.siaFreeGiven;
+        },
+        swarmMinutes() {
+            return this.$store.state.swarmMinutes;
+        },
+        swarmFreeGiven() {
+            return this.$store.state.swarmFreeGiven;
         },
     },
     methods: {
@@ -282,7 +297,15 @@ export default {
             const url = `${constants.apiCastUrl}/api/decast/rec/swarm/result/?task_id=${this.taskId}`;
 
             this.loading = true;
-
+            if (this.recording["Playback Data"]["Playback Size"] > this.siaMinutes) {
+                console.log("size true")
+                this.$vs.notify({
+                    title: 'Insufficient Balance',
+                    text: 'Please add sufficient minutes to your wallet to download this recording.',
+                    color: 'danger',
+                });
+                return;
+            }
             try {
                 let success = false;
                 while (!success) {
@@ -329,6 +352,14 @@ export default {
                             });
                             console.error('No binary data found in response.');
                         }
+                    } else if (response.data.status === 'PENDING') {
+                        this.loading = false;
+                        this.$vs.notify({
+                            title: 'Download Not Ready',
+                            text: 'Your download is not ready yet. Please try again later.',
+                            color: 'warning',
+                        });
+                        return;
                     } else {
                         console.error('Failed to retrieve video data. Status:', response.data.status);
                         await new Promise(resolve => setTimeout(resolve, 5000));
@@ -368,11 +399,21 @@ export default {
             }
         },
         async handleSwarmDownload() {
-            console.log('Running handleSwarmDownload');
+            console.log('Running handleSwarmDownload', this.recording["Playback Data"]["Playback Size"], this.swarmMinutes);
             await this.handleSwarmStatus();
             const token = this.$store.state.accessToken;
             const url = `${constants.apiCastUrl}/api/decast/rec/swarm/result/?task_id=${this.taskId}`;
-
+            this.loading = true;
+            if (parseFloat(this.recording["Playback Data"]["Playback Size"]) > parseFloat(this.swarmMinutes)) {
+                console.log("size true");
+                this.$vs.notify({
+                    title: 'Insufficient Balance',
+                    text: 'Please add sufficient minutes to your wallet to download this recording.',
+                    color: 'danger',
+                });
+                this.loading = false;
+                return;
+            }
             try {
                 let success = false;
                 while (!success) {
@@ -419,6 +460,14 @@ export default {
                             });
                             console.error('No binary data found in response.');
                         }
+                    } else if (response.data.status === 'PENDING') {
+                        this.loading = false;
+                        this.$vs.notify({
+                            title: 'Download Not Ready',
+                            text: 'Your download is not ready yet. Please try again later.',
+                            color: 'warning',
+                        });
+                        return;
                     } else {
                         console.error('Failed to retrieve video data. Status:', response.data.status);
                         await new Promise(resolve => setTimeout(resolve, 5000));
@@ -436,6 +485,7 @@ export default {
                 this.loading = false;
             }
         },
+
 
         // async handleSiaDownload() {
         //     await this.handleSiaStatus();

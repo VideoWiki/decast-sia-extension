@@ -60,7 +60,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   }
     if (message.action === "updateBadge") {
       if (message.badgeType === "cast") {
-        setCastBadge();
+        fetchGasPrices();
       } else{
         fetchGasPrices();
       }
@@ -145,10 +145,7 @@ function updateBadge(gasPrice) {
 
 function setCastBadge() {
   chrome.action.setBadgeBackgroundColor({ color: "#ff0000" });
-  chrome.action.setBadgeTextColor({ color: "#ffffff" });
-  setTimeout(() => {
-    fetchGasPrices();
-  }, 300000);
+  // chrome.action.setBadgeTextColor({ color: "#ffffff" });
 }
 
 
