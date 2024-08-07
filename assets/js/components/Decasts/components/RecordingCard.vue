@@ -149,7 +149,7 @@ import { vsNotify } from 'vuesax';
 
 export default {
     name: "RecordingCard",
-    props: ["recording", "index", "getRecordings"],
+    props: ["recording", "index", "getRecordings", "siaMinutes", "siaFreeGiven", "swarmMinutes", "swarmFreeGiven"],
     data() {
         return {
             isSelecting: false,
@@ -164,25 +164,25 @@ export default {
         DownloadButton,
         CommonLoader,
     },
-    created() {
-        this.$store.dispatch('fetchUserMinutes');
-    },
+    // created() {
+    //     this.$store.dispatch('fetchUserMinutes');
+    // },
     computed: {
         accessToken() {
             return this.$store.state.accessToken;
         },
-        siaMinutes() {
-            return this.$store.state.siaMinutes;
-        },
-        siaFreeGiven() {
-            return this.$store.state.siaFreeGiven;
-        },
-        swarmMinutes() {
-            return this.$store.state.swarmMinutes;
-        },
-        swarmFreeGiven() {
-            return this.$store.state.swarmFreeGiven;
-        },
+        // siaMinutes() {
+        //     return this.$store.state.siaMinutes;
+        // },
+        // siaFreeGiven() {
+        //     return this.$store.state.siaFreeGiven;
+        // },
+        // swarmMinutes() {
+        //     return this.$store.state.swarmMinutes;
+        // },
+        // swarmFreeGiven() {
+        //     return this.$store.state.swarmFreeGiven;
+        // },
     },
     methods: {
         handleSelect() {
@@ -353,15 +353,17 @@ export default {
                             });
                             console.error('No binary data found in response.');
                         }
-                    } else if (response.data.status === 'PENDING') {
-                        this.loading = false;
-                        this.$vs.notify({
-                            title: 'Download Not Ready',
-                            text: 'Your download is not ready yet. Please try again later.',
-                            color: 'warning',
-                        });
-                        return;
-                    } else {
+                    }
+                    // else if (response.data.status === 'PENDING') {
+                    //     this.loading = false;
+                    //     this.$vs.notify({
+                    //         title: 'Download Not Ready',
+                    //         text: 'Your download is not ready yet. Please try again later.',
+                    //         color: 'warning',
+                    //     });
+                    //     return;
+                    // }
+                    else {
                         console.error('Failed to retrieve video data. Status:', response.data.status);
                         await new Promise(resolve => setTimeout(resolve, 5000));
                     }
