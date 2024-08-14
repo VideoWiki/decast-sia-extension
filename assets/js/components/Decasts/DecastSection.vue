@@ -165,10 +165,10 @@ export default {
       try {
         const res = await this.$store.dispatch('cast/decastRecordings');
         this.isRecordingLoading = false;
-        console.log(res);
+        // console.log(res);
       } catch (e) {
         this.isRecordingLoading = false;
-        console.log(e);
+        // console.log(e);
       }
     },
     truncateText(text, maxLength) {
@@ -185,17 +185,17 @@ export default {
         if (response.data.my_events) {
           const allEvents = response.data.my_events.sort((a, b) => b.event_id - a.event_id);
           this.castList = allEvents;
-          console.log('This is castlist', this.castList)
+          // console.log('This is castlist', this.castList)
           this.isCastsLoading = false;
         }
       } catch (error) {
         this.isCastsLoading = false;
-        console.log("Error in fetching cast detail");
+        // console.log("Error in fetching cast detail");
       }
     },
     toggleCopy(index) {
       this.showCopy = this.showCopy === index ? null : index;
-      console.log(index, 'copy');
+      // console.log(index, 'copy');
     },
   }
 }

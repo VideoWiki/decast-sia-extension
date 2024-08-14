@@ -61,7 +61,7 @@
                         placeholder="wallet.balance" :readonly="!isEditing" />
                 </div> -->
 
-                <div class="edit-cont w-full flex mt-4">
+                <!-- <div class="edit-cont w-full flex mt-4">
                     <button @click="editProfile" :disabled="isEditing"
                         class="bg-white text-black flex gap-2 justify-center items-center text-lg pl-2 pr-2"
                         :style="{ display: isEditing ? 'none' : 'block' }"> >> Edit</button>
@@ -70,7 +70,7 @@
                         :style="{ display: isEditing ? 'block' : 'none' }">
                         >> Confirm
                     </button>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -152,15 +152,15 @@ export default {
                     email: this.email,
                     p_image: this.uploadedImageBlob ? this.uploadedImageBlob : '',
                 };
-                console.log(payload);
+                // console.log(payload);
                 this.$store
                     .dispatch('auth/updateUserDetails', payload)
                     .then((res) => {
-                        console.log(res, 'res');
+                        // console.log(res, 'res');
                         this.isEditing = false;
                         this.activeUserInfo.profile_pic = res.data.profile_image;
-                        console.log(res.data.profile_image, 'img');
-                        console.log(payload, 'pay');
+                        // console.log(res.data.profile_image, 'img');
+                        // console.log(payload, 'pay');
                         this.$store.commit('SET_USER_INFO', this.activeUserInfo);
                         this.$vs.notify({
                             title: 'Success',
@@ -169,7 +169,7 @@ export default {
                         });
                     })
                     .catch((err) => {
-                        console.error(err);
+                        // console.error(err);
                         this.$vs.notify({
                             title: 'Error',
                             text: 'Error Saving Details',

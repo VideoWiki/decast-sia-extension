@@ -9,7 +9,7 @@ export default {
           'Authorization': `Bearer ${accessToken}`
         }
       });
-      console.log('Room list response:', res);
+      // console.log('Room list response:', res);
 
       const { room_data } = res.data;
       if (room_data.length > 1) {
@@ -20,7 +20,7 @@ export default {
       if (error.response && error.response.status === 403) {
         commit('setErrorModal', { errorMessage: 'Session expired. Please log in again.' }, { root: true });
         chrome.storage.local.remove(['accessToken', 'userInfo'], function() {
-          console.log('Session data cleared.');
+          // console.log('Session data cleared.');
           commit('setAccessToken', null);
           commit('setUserInfo', null);
         });
@@ -49,7 +49,7 @@ export default {
       if (error.response && error.response.status === 403) {
        commit('setErrorModal', { errorMessage: 'Session expired. Please log in again.' }, { root: true });
         chrome.storage.local.remove(['accessToken', 'userInfo'], function() {
-          console.log('Session data cleared.');
+          // console.log('Session data cleared.');
           commit('setAccessToken', null);
           commit('setUserInfo', null);
         });
@@ -73,7 +73,7 @@ export default {
       if (error.response && error.response.status === 403) {
        commit('setErrorModal', { errorMessage: 'Session expired. Please log in again.' }, { root: true });
         chrome.storage.local.remove(['accessToken', 'userInfo'], function() {
-          console.log('Session data cleared.');
+          // console.log('Session data cleared.');
           commit('setAccessToken', null);
           commit('setUserInfo', null);
         });

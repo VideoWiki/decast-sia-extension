@@ -85,7 +85,7 @@ export default {
                     window.open(res.data.room_url, '_blank', 'width=1366,height=768,scrollbars=yes,resizable=yes');
                 })
                 .catch((e) => {
-                    console.log(e);
+                    // console.log(e);
                 });
         },
     }

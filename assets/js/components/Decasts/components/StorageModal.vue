@@ -103,7 +103,7 @@ export default {
         }
     },
     mounted() {
-        console.log(this.castDetails, 'index');
+        // console.log(this.castDetails, 'index');
         this.getSelectedStorage();
     },
     components: {
@@ -135,7 +135,7 @@ export default {
             return require(`@/images/${image}`).default;
         },
         toggleDropdown() {
-            console.log(this.selectedStorage, 'doro')
+            // console.log(this.selectedStorage, 'doro')
             if (this.preSelected == false) {
                 this.isOpen = !this.isOpen;
             }
@@ -146,7 +146,7 @@ export default {
             this.$emit('input', name);
         },
         redirectToAddFunds() {
-            console.log('func call')
+            // console.log('func call')
             window.open("https://decast.live/addfunds", "_blank");
         },
         async joinNow(id) {
@@ -173,13 +173,13 @@ export default {
                 this.closeModal();
             } catch (e) {
                 this.loading = false;
-                console.log('error', e);
+                // console.log('error', e);
             }
         },
         async getSelectedStorage() {
             const token = this.$store.state.accessToken;
             const cast_id = this.castDetails.public_meeting_id;
-            console.log(token, cast_id, 'llllllllllll');
+            // console.log(token, cast_id, 'llllllllllll');
             const url = `${constants.apiCastUrl}/api/event/select/storage/?cast_id=${cast_id}`;
 
             try {
@@ -189,24 +189,24 @@ export default {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                console.log('Storage retrived successfully:', response.data);
+                // console.log('Storage retrived successfully:', response.data);
 
                 if (response.data.SIA == true && response.data.SWARM == false) {
-                    console.log(response.data.SIA, response.data.SWARM, 'cjdkunn')
+                    // console.log(response.data.SIA, response.data.SWARM, 'cjdkunn')
                     this.selectedStorage = 'Sia';
                     this.preSelected = true;
                 } else if (response.data.SIA == false && response.data.SWARM == true) {
-                    console.log(response.data.SIA, response.data.SWARM, 'cjdkunn')
+                    // console.log(response.data.SIA, response.data.SWARM, 'cjdkunn')
                     this.selectedStorage = 'Swarm';
                     this.preSelected = true;
                 } else if (response.data.SIA == false && response.data.SWARM == false) {
-                    console.log(response.data.SIA, response.data.SWARM, 'cjdkunn')
+                    // console.log(response.data.SIA, response.data.SWARM, 'cjdkunn')
                     this.selectedStorage = '';
                 }
                 this.loading = false;
             } catch (error) {
                 this.loading = false;
-                console.error('Error:', error);
+                // console.error('Error:', error);
             }
         },
         async updateStorageBackend(castId) {
@@ -225,9 +225,9 @@ export default {
                             Authorization: `Bearer ${token}`,
                         },
                     });
-                    console.log('Storage updated successfully:', response.data);
+                    // console.log('Storage updated successfully:', response.data);
                 } catch (error) {
-                    console.error('Error updating storage:', error);
+                    // console.error('Error updating storage:', error);
                 }
             }
         },

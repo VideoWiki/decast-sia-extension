@@ -8,7 +8,6 @@
         "tabs",
         "activeTab",
         "scripting",
-        "https://decast.live/*",
         "notifications",
         "alarms"
     ],
@@ -31,7 +30,7 @@
     "content_scripts": [
         {
             "matches": [
-                "https://decast.live/*"
+                "https://decast.live/"
             ],
             "js": [
                 "contentScript.js"
@@ -42,6 +41,6 @@
         "service_worker": "background.js"
     },
     "host_permissions": [
-        "https://decast.live/*"
+        "https://decast.live/"
     ]
 }

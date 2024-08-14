@@ -15,7 +15,7 @@ export default {
       if (error.response && error.response.status === 403) {
         commit('setErrorModal', { errorMessage: 'Session expired. Please log in again.' }, { root: true });
         chrome.storage.local.remove(['accessToken', 'userInfo'], function() {
-          console.log('Session data cleared.');
+          // console.log('Session data cleared.');
           commit('setAccessToken', null);
           commit('setUserInfo', null);
         });
@@ -38,7 +38,7 @@ export default {
       if (error.response && error.response.status === 403) {
         commit('setErrorModal', { errorMessage: 'Session expired. Please log in again.' }, { root: true });
         chrome.storage.local.remove(['accessToken', 'userInfo'], function() {
-          console.log('Session data cleared.');
+          // console.log('Session data cleared.');
           commit('setAccessToken', null);
           commit('setUserInfo', null);
         });
@@ -62,7 +62,7 @@ export default {
       if (error.response && error.response.status === 403) {
         commit('setErrorModal', { errorMessage: 'Session expired. Please log in again.' }, { root: true });
         chrome.storage.local.remove(['accessToken', 'userInfo'], function() {
-          console.log('Session data cleared.');
+          // console.log('Session data cleared.');
           commit('setAccessToken', null);
           commit('setUserInfo', null);
         });
@@ -82,19 +82,19 @@ export default {
         }
       })
       .then((res) => {
-        console.log('meeting working');
+        // console.log('meeting working');
         resolve(res);
       })
       .catch((error) => {
         if (error.response && error.response.status === 403) {
           commit('setErrorModal', { errorMessage: 'Session expired. Please log in again.' }, { root: true });
           chrome.storage.local.remove(['accessToken', 'userInfo'], function() {
-            console.log('Session data cleared.');
+            // console.log('Session data cleared.');
             commit('setAccessToken', null);
             commit('setUserInfo', null);
           });
         } else {
-          console.log('meeting not working');
+          // console.log('meeting not working');
         }
         reject(error);
       });
@@ -110,19 +110,19 @@ export default {
         }
       })
       .then((response) => {
-        console.log('joining Now');
+        // console.log('joining Now');
         resolve(response.data);
       })
       .catch((error) => {
         if (error.response && error.response.status === 403) {
           commit('setErrorModal', { errorMessage: 'Session expired. Please log in again.' }, { root: true });
           chrome.storage.local.remove(['accessToken', 'userInfo'], function() {
-            console.log('Session data cleared.');
+            // console.log('Session data cleared.');
             commit('setAccessToken', null);
             commit('setUserInfo', null);
           });
         } else {
-          console.log('cannot join');
+          // console.log('cannot join');
         }
         reject(error);
       });
@@ -151,7 +151,7 @@ export default {
       if (error.response && error.response.status === 403) {
         commit('setErrorModal', { errorMessage: 'Session expired. Please log in again.' }, { root: true });
         chrome.storage.local.remove(['accessToken', 'userInfo'], function() {
-          console.log('Session data cleared.');
+          // console.log('Session data cleared.');
           commit('setAccessToken', null);
           commit('setUserInfo', null);
         });
@@ -175,7 +175,7 @@ export default {
       if (error.response && error.response.status === 403) {
         commit('setErrorModal', { errorMessage: 'Session expired. Please log in again.' }, { root: true });
         chrome.storage.local.remove(['accessToken', 'userInfo'], function() {
-          console.log('Session data cleared.');
+          // console.log('Session data cleared.');
           commit('setAccessToken', null);
           commit('setUserInfo', null);
         });

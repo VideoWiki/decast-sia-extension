@@ -260,7 +260,7 @@ export default {
       this.isClicked2 = false;
       this.isClicked1 = true;
       this.isClicked3 = false;
-      console.log(this.accessToken, this.userInfo, 'data')
+      // console.log(this.accessToken, this.userInfo, 'data')
     },
     onCasts() {
       this.casts = true;
@@ -269,7 +269,7 @@ export default {
       this.isClicked2 = true;
       this.isClicked1 = false;
       this.isClicked3 = false;
-      console.log(this.accessToken, this.userInfo, 'data')
+      // console.log(this.accessToken, this.userInfo, 'data')
     },
     onDecasts() {
       this.casts = false;

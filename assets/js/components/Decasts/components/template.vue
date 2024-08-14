@@ -128,7 +128,7 @@ export default {
                 await this.$store.dispatch('cast/deleteRecording', this.recording['Record ID']);
                 await this.getRecordings();
             } catch (error) {
-                console.error(error);
+                // console.error(error);
             }
         },
         truncateText(text, maxLength) {

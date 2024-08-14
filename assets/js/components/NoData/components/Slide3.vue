@@ -1,7 +1,8 @@
 <template>
     <div class="basic_home_div_ flex flex-col gap-2 items-center justify-center">
-        <p class="text-md p-2">
-            Once you complete the previous steps, you should be able to use the <span style="color:#D7DF23;">Decast</span> extension, which
+        <p class="text-md p-2">Just open the extension once on the homepage after logging in to <span
+                style="color:#D7DF23;">Decast</span>.
+            Once you complete the previous steps, you should be able to use the extension, which
             will appear as shown in the image below. Hover over the image for a closer look. You will be redirected to
             <a href="https://decast.live" target="_blank" class="text-blue-500">Decast.live</a> in <span
                 class="text-lg text-semibold" style="color: #D7DF23;">{{ timeLeft }}</span>...

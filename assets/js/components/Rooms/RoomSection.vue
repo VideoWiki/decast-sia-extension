@@ -100,15 +100,15 @@ export default {
       }
     },
     roomsList(newList) {
-      console.log(newList);
+      // console.log(newList);
       this.rooms = [...newList];
       this.firstRoomId = newList.length > 0 ? newList[0] : null;
-      console.log(this.rooms);
+      // console.log(this.rooms);
     },
     recordingList(newList) {
-      console.log(newList);
+      // console.log(newList);
       this.recordings = [...newList];
-      console.log(this.recordings);
+      // console.log(this.recordings);
     },
   },
   mounted() {
@@ -130,11 +130,11 @@ export default {
       this.$store
         .dispatch('room/getList')
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           this.isRoomsLoading = false;
         })
         .catch((e) => {
-          console.log(e);
+          // console.log(e);
           this.isRoomsLoading = false;
         });
     },
@@ -144,10 +144,10 @@ export default {
       try {
         const res = await this.$store.dispatch('room/getRecordings');
         this.isRecordingLoading = false;
-        console.log(res);
+        // console.log(res);
       } catch (e) {
         this.isRecordingLoading = false;
-        console.error('Error getting recordings', e);
+        // console.error('Error getting recordings', e);
       }
     },
 
@@ -157,7 +157,7 @@ export default {
       try {
         await this.getRecordings();
       } catch (e) {
-        console.error('Error getting recordings', e);
+        // console.error('Error getting recordings', e);
       }
       this.isRecordingLoading = false;
     },

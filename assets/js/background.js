@@ -39,9 +39,9 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
                         }
                       );
                     } else {
-                      console.error(
-                        "Failed to retrieve data from decast.live."
-                      );
+                      // console.error(
+                      //   "Failed to retrieve data from decast.live."
+                      // );
                       sendResponse(null);
                     }
                   }
@@ -49,7 +49,12 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
               }
             );
           } else {
-            console.error("decast.live tab is not open.");
+          //   this.$vs.notify({
+          //     title: 'Try again!',
+          //     text: 'decast.live tab is not open!',
+          //     color: 'warning',
+          // });
+            // console.error("decast.live tab is not open.");
             sendResponse(null);
           }
         });
@@ -67,7 +72,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     }   
 });
 
-// Listening for external messages from the content script
+
 chrome.runtime.onMessageExternal.addListener(function (
   message,
   sender,

@@ -26,10 +26,10 @@ chrome.runtime.sendMessage({ action: 'getLocalStorage' }, function(response) {
     store.commit('setAccessToken', accessToken);
     store.commit('setUserInfo', userInfo);
 
-    console.log('Data retrieved successfully:', response);
+    // console.log('Data retrieved successfully:', response);
   } 
   else {
-    console.error('Invalid response:', response);
+    // console.error('Invalid response:', response);
   }
 });
 
