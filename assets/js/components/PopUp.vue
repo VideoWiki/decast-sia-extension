@@ -147,7 +147,7 @@
             <path d="M7.1473 4.7777V2.55547H11.5919V4.7777H7.1473Z" fill="white" />
             <path d="M2.70271 2.55547V0.333252H7.1473V2.55547H2.70271Z" fill="white" />
             <path d="M2.70271 24.7777H0.480408V2.55547H2.70271V24.7777Z" fill="white" />
-            <rect x="14.8022" y="11.6917" width="5.43228" height="3.95062" fill="black" />
+            <rect x="14.8022" y="11.6917" width="5.43228" height="3.95062" fill="black" class="err_icon"/>
           </svg>
         </span>
         CAST
@@ -455,6 +455,10 @@ export default {
 }
 
 .cast_clicked svg path {
+  fill: white !important;
+}
+
+.cast_clicked .err_icon{
   fill: white !important;
 }
 
