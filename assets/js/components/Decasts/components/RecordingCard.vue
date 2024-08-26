@@ -271,14 +271,14 @@ export default {
             const url = `${constants.apiCastUrl}/api/decast/rec/swarm/result/?task_id=${this.taskId}`;
 
             this.loading = true;
-            if (parseFloat(this.recording["Playback Data"]["Playback Length"]) > parseFloat(this.siaMinutes)) {
-                // console.log("size true");
+            if (this.recording.is_deducted === false) {
+                //console.log("size true");
                 this.$vs.notify({
-                    title: 'Insufficient Balance',
-                    text: 'Please add sufficient minutes to your wallet to download this recording.',
+                    title: 'Try again later',
+                    text: 'Your recording will be ready for download in a short while.',
                     color: 'danger',
                 });
-                this.loading = false;
+                this.$vs.loading.close();
                 return;
             }
             try {
@@ -381,14 +381,14 @@ export default {
             const token = this.$store.state.accessToken;
             const url = `${constants.apiCastUrl}/api/decast/rec/swarm/result/?task_id=${this.taskId}`;
             this.loading = true;
-            if (parseFloat(this.recording["Playback Data"]["Playback Length"]) > parseFloat(this.swarmMinutes)) {
-                // console.log("size true");
+            if (this.recording.is_deducted === false) {
+                //console.log("size true");
                 this.$vs.notify({
-                    title: 'Insufficient Balance',
-                    text: 'Please add sufficient minutes to your wallet to download this recording.',
+                    title: 'Try again later',
+                    text: 'Your recording will be ready for download in a short while.',
                     color: 'danger',
                 });
-                this.loading = false;
+                this.$vs.loading.close();
                 return;
             }
             try {
