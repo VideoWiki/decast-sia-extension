@@ -6,10 +6,10 @@
                 {{ truncateText(room.room_name, 20) }}
             </p>
             <div class="flex flex-row justify-start items-center gap-4 mt-2">
-                <p class="text-md shortURL">{{ shortURL }}</p> 
+                <p class="text-md shortURL">{{ shortURL }}</p>
                 <button class="custm-style" @click="copy(room.short_code)">
                     <span class="copy_btn_cont" v-tooltip="'/Copy'">
-                        <CopyButton color="#D7DF23"/>
+                        <CopyButton color="#D7DF23" />
                     </span></button>
             </div>
         </div>
@@ -20,7 +20,7 @@
             </span>
 
             <span v-if="isRoomStart">
-               <LiveButton/>
+                <LiveButton />
             </span>
         </div>
     </div>
@@ -81,8 +81,21 @@ export default {
                 .then((res) => {
                     this.isRoomStart = true;
                     chrome.runtime.sendMessage({ action: 'updateBadge', badgeType: 'cast' });
-                    // window.open(res.data.room_url, '_blank');
-                    window.open(res.data.room_url, '_blank', 'width=1366,height=768,scrollbars=yes,resizable=yes');
+
+                    const newWindow = window.open(
+                        res.data.room_url,
+                        "_blank",
+                        "width=1366,height=768,scrollbars=yes,resizable=yes"
+                    );
+
+                    if (!newWindow || newWindow.closed || typeof newWindow.closed === "undefined") {
+                        this.$vs.notify({
+                            title: 'Window Blocked',
+                            text: 'You have popup blockers enabled in your browser. please diable them or add decast to exception list.',
+                            time: 10000,
+                            color: 'danger',
+                        });
+                    }
                 })
                 .catch((e) => {
                     // console.log(e);
@@ -109,5 +122,4 @@ export default {
 .shortURL {
     color: #a6a6a6;
 }
-
 </style>

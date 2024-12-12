@@ -8,24 +8,29 @@
                 {{ truncateText(recording.Name, 20) }}
             </p>
             <div class="flex gap-2 justify-end items-center">
-                <!-- <span class="edit_btn cursor-pointer" @click="editRecord" v-tooltip="'/Edit'">
-                    <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M2.42205 2.59665C2.42205 2.42805 2.48902 2.26636 2.60824 2.14715C2.72745 2.02793 2.88914 1.96096 3.05774 1.96096H4.01127V1.00742C4.01127 0.838824 4.07825 0.677134 4.19746 0.557918C4.31668 0.438703 4.47837 0.371729 4.64696 0.371729C4.81556 0.371729 4.97725 0.438703 5.09646 0.557918C5.21568 0.677134 5.28265 0.838824 5.28265 1.00742V1.96096H6.23619C6.40479 1.96096 6.56648 2.02793 6.68569 2.14714C6.80491 2.26636 6.87188 2.42805 6.87188 2.59665C6.87188 2.76524 6.80491 2.92693 6.68569 3.04615C6.56648 3.16536 6.40479 3.23234 6.23619 3.23234H5.28265V4.18587C5.28265 4.35447 5.21568 4.51616 5.09646 4.63537C4.97725 4.75459 4.81556 4.82156 4.64696 4.82156C4.47837 4.82156 4.31668 4.75459 4.19746 4.63537C4.07825 4.51616 4.01127 4.35447 4.01127 4.18587V3.23234H3.05774C2.88914 3.23233 2.72745 3.16536 2.60824 3.04614C2.48902 2.92693 2.42205 2.76524 2.42205 2.59665ZM17.0429 9.2714H15.7715V8.00002C15.7715 7.83142 15.7046 7.66973 15.5854 7.55051C15.4661 7.4313 15.3045 7.36433 15.1359 7.36433C14.9673 7.36433 14.8056 7.4313 14.6864 7.55051C14.5671 7.66973 14.5002 7.83142 14.5002 8.00002V9.2714H13.2288C13.0602 9.2714 12.8985 9.33837 12.7793 9.45759C12.6601 9.5768 12.5931 9.73849 12.5931 9.90709C12.5931 10.0757 12.6601 10.2374 12.7793 10.3566C12.8985 10.4758 13.0602 10.5428 13.2288 10.5428H14.5002V11.8142C14.5002 11.9828 14.5671 12.1444 14.6864 12.2637C14.8056 12.3829 14.9673 12.4498 15.1359 12.4498C15.3045 12.4498 15.4661 12.3829 15.5854 12.2637C15.7046 12.1444 15.7715 11.9828 15.7715 11.8142V10.5428H17.0429C17.2115 10.5428 17.3732 10.4758 17.4924 10.3566C17.6116 10.2374 17.6786 10.0757 17.6786 9.90709C17.6786 9.73849 17.6116 9.5768 17.4924 9.45759C17.3732 9.33837 17.2115 9.2714 17.0429 9.2714ZM12.4067 7.1784L3.9568 15.6283C3.71814 15.8663 3.39485 16 3.05779 16C2.72074 16 2.39743 15.8664 2.15875 15.6284L0.514975 13.9845C0.396904 13.8665 0.303247 13.7263 0.239351 13.572C0.175454 13.4178 0.142571 13.2525 0.142578 13.0855C0.142586 12.9185 0.175484 12.7532 0.239394 12.5989C0.303304 12.4447 0.396973 12.3045 0.515054 12.1865L12.3297 0.371729C12.5684 0.133696 12.8917 1.48971e-05 13.2287 1.245e-09C13.5658 -1.48946e-05 13.8891 0.133638 14.1278 0.37165L15.7715 2.01551C15.8896 2.13357 15.9833 2.27373 16.0472 2.42798C16.1111 2.58224 16.1439 2.74758 16.1439 2.91455C16.1439 3.08151 16.111 3.24685 16.0471 3.4011C15.9832 3.55535 15.8895 3.6955 15.7715 3.81355L12.4072 7.17785L12.4069 7.17813L12.4067 7.1784ZM11.9574 5.82961L14.8725 2.91449L14.8726 2.91441L14.8731 2.91383L13.2288 1.27071L10.3137 4.18587L11.9574 5.82961ZM12.5931 13.0855H11.9574V12.4498C11.9574 12.2813 11.8904 12.1196 11.7712 12.0003C11.652 11.8811 11.4903 11.8142 11.3217 11.8142C11.1531 11.8142 10.9914 11.8811 10.8722 12.0003C10.753 12.1196 10.686 12.2813 10.686 12.4498V13.0855H10.0503C9.88174 13.0855 9.72005 13.1525 9.60083 13.2717C9.48162 13.3909 9.41464 13.5526 9.41464 13.7212C9.41464 13.8898 9.48162 14.0515 9.60083 14.1707C9.72005 14.2899 9.88174 14.3569 10.0503 14.3569H10.686V14.9926C10.686 15.1612 10.753 15.3229 10.8722 15.4421C10.9914 15.5613 11.1531 15.6283 11.3217 15.6283C11.4903 15.6283 11.652 15.5613 11.7712 15.4421C11.8904 15.3229 11.9574 15.1612 11.9574 14.9926V14.3569H12.5931C12.7617 14.3569 12.9234 14.2899 13.0426 14.1707C13.1618 14.0515 13.2288 13.8898 13.2288 13.7212C13.2288 13.5526 13.1618 13.3909 13.0426 13.2717C12.9234 13.1525 12.7617 13.0855 12.5931 13.0855Z"
-                            fill="#A1A1A1" />
-                    </svg>
-
+                <span v-if="load" class="spinner cursor-pointer">
+                    <vx-tooltip text="/Loading storage..." position="top">
+                        <div class="loader"></div>
+                    </vx-tooltip>
                 </span>
 
-                <span class="copy_btn cursor-pointer" @click="copyRecording" v-tooltip="'/Copy'">
-                    <CopyButton />
-                </span> -->
+                <span v-else-if="selectedStorage === 'swarm'" class="choose_plat cursor-pointer">
+                    <vx-tooltip text="/Uploaded to Swarm" position="top">
+                        <img class="w-6 h-6 object-contain" src="@/images/swarm.png" />
+                    </vx-tooltip>
+                </span>
 
-                <!-- <span v-if="recording.swarm_uploaded === false && recording.sia_uploaded === false"
-                    class="edit_btn cursor-pointer" @click="handleDeleteRecording" v-tooltip="'/Delete'">
-                    <DeleteButton />
-                </span> -->
+                <span v-else-if="selectedStorage === 'sia'" class="choose_plat cursor-pointer">
+                    <vx-tooltip text="/Uploaded to Sia" position="top">
+                        <img class="w-8 h-8 object-contain" src="@/images/sia.png" />
+                    </vx-tooltip>
+                </span>
 
+                <span v-else class="no_storage cursor-pointer">
+                    <vx-tooltip text="/No storage selected" position="top">
+                        <p>O</p>
+                    </vx-tooltip>
+                </span>
                 <span class="down_btn cursor-pointer" @click="handleDownloadRecording" v-tooltip="'/Download'">
                     <DownloadButton />
                 </span>
@@ -155,6 +160,8 @@ export default {
             isSelecting: false,
             loading: false,
             taskId: '',
+            selectedStorage: null,
+            load:false,
         };
     },
     components: {
@@ -167,6 +174,9 @@ export default {
     // created() {
     //     this.$store.dispatch('fetchUserMinutes');
     // },
+    mounted() {
+        this.fetchSelectedStorage();
+    },
     computed: {
         accessToken() {
             return this.$store.state.accessToken;
@@ -209,7 +219,7 @@ export default {
                 ) + "/video-0.m4v"
             );
         },
-        
+
         editRecord() {
             setTimeout(() => {
                 const meetingId = this.recording['Record ID'];
@@ -217,6 +227,35 @@ export default {
                 // window.open(url, '_blank');
                 window.open(url, '_blank', 'width=1366,height=768,scrollbars=yes,resizable=yes');
             }, 1000);
+        },
+
+        async fetchSelectedStorage() {
+            const cast_id = this.recording.pub_id;
+            const token = this.$store.state.accessToken;
+            const url = `${constants.apiCastUrl}/api/event/select/storage/?cast_id=${cast_id}`;
+
+            try {
+                this.load=true;
+                const response = await axios.get(url, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    },
+                })
+                const { SIA, SWARM } = response.data;
+                if (SIA && !SWARM) {
+                    this.selectedStorage = "sia";
+                } else if (!SIA && SWARM) {
+                    this.selectedStorage = "swarm";
+                } else {
+                    this.selectedStorage = null;
+                }
+            } catch (error) {
+                this.load=true;
+                console.error("Error fetching selected storage:", error);
+                this.selectedStorage = null;
+            } finally {
+                this.load = false;
+            }
         },
 
         async getSelectedStorage() {
@@ -437,7 +476,7 @@ export default {
                             });
                             // console.error('No binary data found in response.');
                         }
-                    } 
+                    }
                     else if (response.data.status === 'PENDING') {
                         this.loading = false;
                         this.$vs.notify({
@@ -446,7 +485,7 @@ export default {
                             color: 'warning',
                         });
                         return;
-                    } 
+                    }
                     else {
                         // console.error('Failed to retrieve video data. Status:', response.data.status);
                         await new Promise(resolve => setTimeout(resolve, 5000));
@@ -538,7 +577,7 @@ export default {
 
 .select_card {
     /* border: 1px solid #fff; */
-    min-height: 220px;
+    min-height: 235px;
     height: auto;
     width: 435px;
     display: flex;
@@ -558,5 +597,26 @@ export default {
 .sia_container:hover {
     border: 1px solid #d7df23;
     width: 100%;
+}
+
+.loader {
+    border: 4px solid #f3f3f3;
+    /* Light gray */
+    border-top: 4px solid #d7df23;
+    /* Highlight color */
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 </style>

@@ -168,7 +168,7 @@ export default {
 
 .cast_list_cont {
   overflow: scroll !important;
-  height: 220px;
+  height: 235px;
 }
 
 .cast_list_cont::-webkit-scrollbar {

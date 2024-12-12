@@ -62,8 +62,7 @@ const store = createStore({
           swarmFreeGiven: swarm_free_given,
         });
       } catch (error) {
-        // console.error('Error fetching user minutes:', error);
-        commit('setErrorModal', { errorMessage: 'Failed to fetch user minutes' });
+        console.error('Error fetching user minutes:', error);
       }
     },
   },

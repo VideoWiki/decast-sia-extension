@@ -1,18 +1,13 @@
 <template>
   <div>
     <CastCardShimmer v-if="isLoading" />
-    <div
-      v-else
-      class="cast_list flex flex-col justify-between items-start text-left mb-4 w-full py-3 px-4"
-    >
+    <div v-else class="cast_list flex flex-col justify-between items-start text-left mb-4 w-full py-3 px-4">
       <div class="flex flex-row justify-between items-center w-full">
         <div class="flex flex-col gap-1">
           <p class="font-semibold text-lg flex items-center">
             {{ truncateText(castDetails.event_name, 25) }}
-            <span
-              class="text-red-500 text-sm flex items-center gap-2 ml-4"
-              v-if="castDetails.is_running === 'true'"
-              ><span class="basic_live_dot_ rounded-full"></span>
+            <span class="text-red-500 text-sm flex items-center gap-2 ml-4"
+              v-if="castDetails.is_running === 'true'"><span class="basic_live_dot_ rounded-full"></span>
             </span>
           </p>
           <p style="color: #a6a6a6" class="mt-2">
@@ -21,11 +16,8 @@
         </div>
 
         <div class="cursor-pointer">
-          <span
-            v-if="castDetails.is_running === 'false' && !isCastStart"
-            @click="joinNow(castDetails.public_meeting_id)"
-            v-tooltip="'/Start'"
-          >
+          <span v-if="castDetails.is_running === 'false' && !isCastStart"
+            @click="joinNow(castDetails.public_meeting_id)" v-tooltip="'/Start'">
             <StartButton />
           </span>
 
@@ -38,15 +30,9 @@
           </span>
         </div>
       </div>
-      <div
-        class="flex flex-row justify-start items-center gap-4 mt-2"
-        v-if="castDetails.cast_type === 'public'"
-      >
+      <div class="flex flex-row justify-start items-center gap-4 mt-2" v-if="castDetails.cast_type === 'public'">
         <p class="text-md shortURL">{{ truncateText(shortURL, 30) }}</p>
-        <button
-          class="custm-style"
-          @click="copy(castDetails.public_meeting_id, castDetails.h_ap)"
-        >
+        <button class="custm-style" @click="copy(castDetails.public_meeting_id, castDetails.h_ap)">
           <span v-tooltip="'/Copy'">
             <CopyButton color="#D7DF23" />
           </span>
@@ -125,12 +111,20 @@ export default {
         const res = await this.$store.dispatch("cast/joinNow", data);
         this.isCastStart = true;
         chrome.runtime.sendMessage({ action: 'updateBadge', badgeType: 'cast' });
-        // window.open(res.url, '_blank');
-        window.open(
+        const newWindow = window.open(
           res.url,
           "_blank",
           "width=1366,height=768,scrollbars=yes,resizable=yes"
         );
+
+        if (!newWindow || newWindow.closed || typeof newWindow.closed === "undefined") {
+          this.$vs.notify({
+            title: 'Window Blocked',
+            text: 'You have popup blockers enabled in your browser. please diable them or add decast to exception list.',
+            time: 10000,
+            color: 'danger',
+          });
+        }
       } catch (e) {
         console.log("error", e);
       }

@@ -114,8 +114,20 @@ export default {
                 const res = await this.$store.dispatch('cast/joinNow', data);
                 this.isCastStart = true;
                 chrome.runtime.sendMessage({ action: 'updateBadge', badgeType: 'cast' });
-                // window.open(res.url, '_blank');
-                window.open(res.url, '_blank', 'width=1366,height=768,scrollbars=yes,resizable=yes');
+                const newWindow = window.open(
+                    res.url,
+                    "_blank",
+                    "width=1366,height=768,scrollbars=yes,resizable=yes"
+                );
+
+                if (!newWindow || newWindow.closed || typeof newWindow.closed === "undefined") {
+                    this.$vs.notify({
+                        title: 'Window Blocked',
+                        text: 'You have popup blockers enabled in your browser. please diable them or add decast to exception list.',
+                        time: 10000,
+                        color: 'danger',
+                    });
+                }
             } catch (e) {
                 console.log('error', e);
             }

@@ -31,7 +31,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="basic_wallet_container__ w-full flex flex-col mt-2 gap-4 p-4 pb-4">
+
+                <div class="w-full flex items-center justify-center gap-4 mt-2">
+                    <button
+                        class="basic_start_btn_ w-1/2 p-2 text-lg text-black flex items-center justify-center gap-2 disabled:opacity-80 disabled:cursor-not-allowed"
+                        @click="joinNow(castDetails.public_meeting_id)" :disabled="!selectedStorage">
+                        <img src="@/images/start.png" alt="">Start Decast</button>
+                    <button class="cancel_btn_ w-1/2 p-2 text-lg bg-black text-red-500"
+                        @click="closeModal">Cancel</button>
+                </div>
+
+                <div class="basic_wallet_container__ w-full flex flex-col mt-8 gap-4 p-4 pb-4">
                     <h2 class="text-white font-bold text-xl flex justify-between items-center">//Wallet Balance
                         <span><svg width="25px" height="25px" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -47,17 +57,19 @@
                             </svg></span>
                     </h2>
 
+
+
                     <div class="flex flex-col gap-2">
                         <p class="text-grey-light text-lg" style="color: #22c55e;">Storage</p>
                         <p class="text-2xl font-semibold text-white"
-                            v-if="swarmFreeGiven === true && selectedStorage == 'Swarm'">{{ swarmMinutes }}<span
-                                class="text-lg font-normal">Minutes</span></p>
+                            v-if="swarmFreeGiven === true && selectedStorage == 'Swarm'">{{ swarmMinutes }} <span
+                                class="text-lg font-normal"> Minutes</span></p>
                         <p class="text-2xl font-semibold text-white"
-                            v-else-if="siaFreeGiven === true && selectedStorage == 'Sia'">{{ siaMinutes }}<span
-                                class="text-lg font-normal">Minutes</span>
+                            v-else-if="siaFreeGiven === true && selectedStorage == 'Sia'">{{ siaMinutes }} <span
+                                class="text-lg font-normal"> Minutes</span>
                         </p>
-                        <p class="text-2xl font-semibold text-white" v-else>0<span
-                                class="text-lg font-normal">Minutes</span>
+                        <p class="text-2xl font-semibold text-white" v-else>0 <span
+                                class="text-lg font-normal"> Minutes</span>
                         </p>
                     </div>
                 </div>
@@ -69,14 +81,7 @@
                     </button>
                 </div>
 
-                <div class="w-full flex items-center justify-center gap-4 mt-8">
-                    <button
-                        class="basic_start_btn_ w-1/2 p-2 text-lg bg-white text-black flex items-center justify-center gap-2 disabled:opacity-80 disabled:cursor-not-allowed"
-                        @click="joinNow(castDetails.public_meeting_id)" :disabled="!selectedStorage">
-                        <img src="@/images/start.png" alt="">Start Decast</button>
-                    <button class="cancel_btn_ w-1/2 p-2 text-lg bg-black text-red-500"
-                        @click="closeModal">Cancel</button>
-                </div>
+
             </div>
         </div>
     </div>
@@ -248,13 +253,13 @@ export default {
     border: 1px solid #fff;
     color: #fff;
     width: 100%;
-    height: 385px;
+    height: 400px;
     left: 0;
     top: 0;
 }
 
 .basic_child_modal_ {
-    height: 385px;
+    height: 400px;
     overflow-y: scroll;
 }
 
@@ -293,9 +298,10 @@ export default {
 }
 
 .basic_start_btn_ {
-    border: 1px solid #d7df23;
-    border-right: 2px solid #d7df23;
-    border-bottom: 2px solid #d7df23;
+    background: #22c55e;
+    border: 1px solid #fff;
+    border-right: 2px solid #fff;
+    border-bottom: 2px solid #fff;
 }
 
 .cancel_btn_ {

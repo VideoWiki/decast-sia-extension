@@ -197,13 +197,13 @@ export default {
     border: 1px solid #fff;
     color: #fff;
     width: 100%;
-    height: 385px;
+    height: 400px;
     left: 0;
     top: 0;
 }
 
 .basic_child_modal_ {
-    height: 385px;
+    height: 400px;
     overflow-y: scroll;
 }
 

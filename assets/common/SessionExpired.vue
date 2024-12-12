@@ -61,7 +61,7 @@ export default {
     /* box-shadow: 3px 3px 0px 0px #d2d2d2; */
     color: #fff;
     width: 100%;
-    height: 385px;
+    height: 400px;
     left: 0;
     top: 0;
 }

@@ -26,7 +26,13 @@
         <CastCardShimmer :style="{ opacity: 0.6 }" />
         <CastCardShimmer :style="{ opacity: 0.5 }" />
       </div>
-      <div v-else v-for="(cast, index) in castList" :key="index">
+      <div v-else-if="castList.length === 0"
+        class="flex flex-row h-full items-center justify-center text-white text-center">
+        <span>Decast hasn't been created yet. Click <a href="https://decast.live/dashboard/decast" target="_blank"
+            class="text-blue-500">here</a> to get started and create your Decast now!</span>
+      </div>
+
+      <div v-else-if="castList.length !== 0" v-for="(cast, index) in castList" :key="index">
         <CastCard :castDetails="cast" :index="index" :getCastList="getCastList" @openModal="openModal(cast)" />
       </div>
     </div>
@@ -39,7 +45,8 @@
       <div v-else-if="recordingList.length">
         <div class="recordings flex justify-between items-center mb-4"
           v-for="(recording, index) in flattenedRecordingList" :key="index">
-          <RecordingCard :recording="recording" :index="index" :getRecordings="getRecordings" :siaMinutes="siaMinutes" :siaFreeGiven="siaFreeGiven" :swarmMinutes="swarmMinutes" :swarmFreeGiven="swarmFreeGiven"/>
+          <RecordingCard :recording="recording" :index="index" :getRecordings="getRecordings" :siaMinutes="siaMinutes"
+            :siaFreeGiven="siaFreeGiven" :swarmMinutes="swarmMinutes" :swarmFreeGiven="swarmFreeGiven" />
         </div>
       </div>
       <div v-else class="recording flex flex-col items-center justify-items-center gap-4 mt-4">
@@ -217,7 +224,7 @@ export default {
 
 .cast_list_cont {
   overflow: scroll !important;
-  height: 220px;
+  height: 235px;
 }
 
 .cast_list_cont::-webkit-scrollbar {
