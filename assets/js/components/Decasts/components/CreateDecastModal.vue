@@ -29,7 +29,7 @@
                         </div>
                     </div>
                     <div class="flex gap-4">
-                        <input v-model="stepOneProps.startD" type="date" class="input_field" required />
+                        <input v-model="stepOneProps.startD" type="date" class="input_field"  :max="'2099-12-31'" min="minDate" required />
                         <input v-model="stepOneProps.startTime" type="time" class="input_field" required />
                     </div>
                     <div class="flex gap-4">
@@ -72,6 +72,7 @@ export default {
         return {
             loading: false,
             formData: new FormData(),
+            minDate: moment().format('YYYY-MM-DD'),
             stepOneProps: {
                 mint_function_name: '',
                 mintfnc_name_error: false,
@@ -280,13 +281,13 @@ export default {
     border: 1px solid #fff;
     color: #fff;
     width: 100%;
-    height: 400px;
+    height: 415px;
     left: 0;
     top: 0;
 }
 
 .basic_child_modal_ {
-    height: 400px;
+    height: 415px;
     overflow-y: scroll;
 }
 
