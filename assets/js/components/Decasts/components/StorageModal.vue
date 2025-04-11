@@ -32,7 +32,7 @@
                     </div>
                 </div>
 
-                <div class="w-full flex items-center justify-center gap-4 mt-2">
+                <div class="w-full border-b border-white pb-6 flex items-center justify-center gap-4 mt-2">
                     <button
                         class="basic_start_btn_ w-1/2 p-2 text-lg text-black flex items-center justify-center gap-2 disabled:opacity-80 disabled:cursor-not-allowed"
                         @click="joinNow(castDetails.public_meeting_id)" :disabled="!selectedStorage">
@@ -41,7 +41,7 @@
                         @click="closeModal">Cancel</button>
                 </div>
 
-                <div class="basic_wallet_container__ w-full flex flex-col mt-8 gap-4 p-4 pb-4">
+                <div class="basic_wallet_container__ w-full flex flex-col mt-4 gap-4 p-4 pb-4">
                     <h2 class="text-white font-bold text-xl flex justify-between items-center">//Wallet Balance
                         <span><svg width="25px" height="25px" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -68,13 +68,13 @@
                             v-else-if="siaFreeGiven === true && selectedStorage == 'Sia'">{{ siaMinutes }} <span
                                 class="text-lg font-normal"> Minutes</span>
                         </p>
-                        <p class="text-2xl font-semibold text-white" v-else>0 <span
-                                class="text-lg font-normal"> Minutes</span>
+                        <p class="text-2xl font-semibold text-white" v-else>0 <span class="text-lg font-normal">
+                                Minutes</span>
                         </p>
                     </div>
                 </div>
 
-                <div class="w-full flex border-b border-white pb-6" @click="redirectToAddFunds">
+                <div class="w-full flex pb-2" @click="redirectToAddFunds">
                     <button
                         class="add_funds_btn bg-white text-black flex gap-2 justify-center items-center text-lg p-2">
                         <img src="../../../../images/coin.svg" alt="coin"> Add Minutes
@@ -178,7 +178,21 @@ export default {
                 this.closeModal();
             } catch (e) {
                 this.loading = false;
-                // console.log('error', e);
+                if (e.response?.data?.status === false &&
+                    e.response?.data?.message === "please check the scheduled cast start time") {
+                    this.$vs.notify({
+                        title: 'Warning',
+                        text: 'You can only access the cast 30 minutes or less before the scheduled start time.',
+                        color: 'warning',
+                    });
+                } else {
+                    console.error('Error while joining the meeting:', e);
+                    this.$vs.notify({
+                        title: 'Error',
+                        text: 'Failed to join the meeting. Please try again later.',
+                        color: 'danger',
+                    });
+                }
             }
         },
         async getSelectedStorage() {

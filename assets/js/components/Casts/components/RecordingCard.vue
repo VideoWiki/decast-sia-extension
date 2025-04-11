@@ -1,7 +1,7 @@
 <template>
-    <div class="recordings flex flex-col justify-between items-center mb-4 w-full py-2 px-4 gap-2">
+    <div class="recordings flex flex-col justify-between items-center mb-2 w-full py-2 px-4 gap-2">
         <div class="flex flex-row justify-between items-center w-full">
-            <p class="text-lg font-semibold">{{ truncateText(recording.Name, 20) }} </p>
+            <p class="text-lg font-normal">{{ truncateText(recording.Name, 20) }} </p>
             <div class="flex gap-2 justify-end items-center">
                 <span class="edit_btn cursor-pointer" @click="editRecord" v-tooltip="'/Edit'">
                     <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -28,17 +28,17 @@
         </div>
         <div class="flex flex-row justify-between items-center w-full">
             <div class="flex flex-col gap-2">
-                <p style="color: #a6a6a6; font-size: 16px;">>>Cast: <span style="color:#D7DF23;"> {{truncateText(recording.cast_name, 20) }}
+                <p style="color: #a6a6a6; font-size: 14px;">>>Cast: <span style="color:#D7DF23;"> {{truncateText(recording.cast_name, 14) }}
                     </span></p>
 
-                <p style="color: #a6a6a6; font-size: 16px;">>>Size: <span style="color:#D7DF23;">{{ recording['Playback Data']['Playback Size'] }}</span></p>
+                <p style="color: #a6a6a6; font-size: 14px;">>>Size: <span style="color:#D7DF23;">{{ recording['Playback Data']['Playback Size'] }}</span></p>
             </div>
             <div class="flex flex-col gap-2">
-                <p class="flex justify-end items-end" style="color: #a6a6a6; font-size: 16px;">
+                <p class="flex justify-end items-end" style="color: #a6a6a6; font-size: 15px;">
                     {{ recording['Start Time (Readable)'].split(' ')[0] }}
                 </p>
 
-                <p style="color: #a6a6a6; font-size: 16px;">>>Length: <span style="color:#D7DF23;">{{ recording['Playback Data']['Playback Length'] }} min</span></p>
+                <p style="color: #a6a6a6; font-size: 14px;">>>Length: <span style="color:#D7DF23;">{{ recording['Playback Data']['Playback Length'] }} min</span></p>
             </div>
         </div>
     </div>

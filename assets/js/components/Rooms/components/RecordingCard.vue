@@ -1,7 +1,7 @@
 <template>
     <div class="recordings flex flex-col justify-between items-center mb-4 w-full py-2 px-4 gap-2">
         <div class="flex flex-row justify-between items-center w-full">
-            <p class="text-lg font-semibold">{{ recording.url.Name }} </p>
+            <p class="text-lg font-normal">{{ truncateText(recording.url.Name, 20) }} </p>
             <div class="flex gap-3 justify-end items-center">
                 <span class="edit_btn cursor-pointer" @click="editRecord" v-tooltip="'/Edit'">
                     <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -17,14 +17,13 @@
                 </span>
 
                 <span class="open_btn cursor-pointer" @click="openRecording" v-tooltip="'/Play'">
-                    <StartButton/>
+                    <StartButton />
                 </span>
             </div>
         </div>
         <div class="flex flex-row justify-between items-center w-full">
-            <p style="color: #a6a6a6; font-size: 16px;">>>Room: <span style="color:#D7DF23;">{{ recording.room_name
-                    }}</span></p>
-            <p style="color: #a6a6a6; font-size: 16px;">
+            <p style="color: #a6a6a6; font-size: 14px;">>>Room: <span style="color:#D7DF23;">{{ recording.room_name, 14}}</span></p>
+            <p style="color: #a6a6a6; font-size: 14px;">
                 {{ recording.url['Start Time (Readable)'].split(' ')[0] }}
             </p>
         </div>
@@ -47,6 +46,13 @@ export default {
         StartButton
     },
     methods: {
+        truncateText(text, maxLength) {
+            if (text.length > maxLength) {
+                return text.slice(0, maxLength) + "...";
+            } else {
+                return text;
+            }
+        },
         openRecording() {
             const playbackURL =
                 this.recording.url['Playback Data']['Playback URL'].replace(

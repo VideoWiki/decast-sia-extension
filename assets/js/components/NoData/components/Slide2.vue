@@ -1,7 +1,7 @@
 <template>
     <div class="basic_home_div_ flex flex-col gap-2 items-center justify-center">
         <p class="text-md p-2">
-            Once you click on the 'Login/Signup' button, this popup window will appear where you can either log in with
+            Once you click on the '/user.signin' button, this popup window will appear where you can either log in with
             your existing account credentials or create a new account by selecting 'Signup'. After successfully logging
             in to <span style="color:#D7DF23;">Decast</span>, you'll gain access to the extension's features. For further guidance, hover over the image
             below to see the popup.
@@ -42,7 +42,7 @@ export default {
 }
 
 .image-container2:hover .zoom-image2 {
-    transform: scale(2);
+    transform: scale(1.5);
     transform-origin: top left !important;
 }
 </style>

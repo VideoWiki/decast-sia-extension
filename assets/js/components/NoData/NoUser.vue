@@ -62,10 +62,10 @@
         </div>
 
         <div class="flex w-full justify-end items-center mt-4 gap-4">
-            <button class="nxt_btn_ px-2 text-lg" @click="prevInstructions" :disabled="currentStep === 0">Back<<
+            <button class="prev_btn_ px-2 text-lg" @click="prevInstructions" :hidden="currentStep === 0">Back<<
                     </button>
                     <button class="nxt_btn_ px-2 text-lg" @click="nextInstructions"
-                        :disabled="currentStep === 3">>>Next</button>
+                        :hidden="currentStep === 3">>>Next</button>
         </div>
     </div>
 </template>
@@ -125,11 +125,25 @@ export default {
     text-align: justify;
 }
 
-.nxt_btn_ {
-    height: 38px;
+.prev_btn_ {
+    height: 30px;
     min-width: 100px;
     width: auto;
-    color: #D7DF23;
+    color: #000;
+    background-color: #dadada;
+    border-top: 1px solid white;
+    border-left: 1px solid white;
+    border-bottom: 2px solid white;
+    border-right: 2px solid white;
+    /* box-shadow: 3px 3px 0px 0px #fff; */
+}
+
+.nxt_btn_ {
+    height: 30px;
+    min-width: 100px;
+    width: auto;
+    color: #000;
+    background-color: #22c55e;
     border-top: 1px solid white;
     border-left: 1px solid white;
     border-bottom: 2px solid white;

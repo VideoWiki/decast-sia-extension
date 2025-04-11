@@ -39,9 +39,6 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
                         }
                       );
                     } else {
-                      // console.error(
-                      //   "Failed to retrieve data from decast.live."
-                      // );
                       sendResponse(null);
                     }
                   }
@@ -49,12 +46,6 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
               }
             );
           } else {
-          //   this.$vs.notify({
-          //     title: 'Try again!',
-          //     text: 'decast.live tab is not open!',
-          //     color: 'warning',
-          // });
-            // console.error("decast.live tab is not open.");
             sendResponse(null);
           }
         });
@@ -95,23 +86,49 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 
 async function fetchGasPrices() {
   try {
-    const url =
-      "https://api.blocknative.com/gasprices/blockprices?confidenceLevels=99&confidenceLevels=90&confidenceLevels=80&confidenceLevels=60";
-    const response = await fetch(url);
-    const data = await response.json();
+    const cachedData = await chrome.storage.local.get([
+      "cachedGasPrices",
+      "lastFetched",
+    ]);
+    const lastFetched = cachedData.lastFetched || 0;
+    const now = Date.now();
 
-    if (data && data.blockPrices) {
-      const blockPrices = data.blockPrices[0].estimatedPrices;
-      const normalPrice = blockPrices.find((price) => price.confidence === 90);
+    if (now - lastFetched > 10 * 60 * 1000) {
+      const url =
+        "https://api.blocknative.com/gasprices/blockprices?confidenceLevels=99&confidenceLevels=90&confidenceLevels=80&confidenceLevels=60";
+      const response = await fetch(url);
+      const data = await response.json();
 
-      if (normalPrice) {
-        const gasPrice = normalPrice.price;
-        updateBadge(gasPrice);
-        chrome.storage.local.set({ gasPrices: blockPrices });
-        chrome.runtime.sendMessage({ action: "updateGasPrices" });
+      if (data?.blockPrices?.[0]?.estimatedPrices) {
+        const blockPrices = data.blockPrices[0].estimatedPrices;
+        const normalPrice = blockPrices.find(
+          (price) => price.confidence === 90
+        );
+
+        if (normalPrice) {
+          const gasPrice = normalPrice.price;
+          updateBadge(gasPrice);
+
+          await chrome.storage.local.set({
+            gasPrices: blockPrices,
+            cachedGasPrices: blockPrices,
+            lastFetched: now,
+          });
+
+          chrome.runtime.sendMessage({ action: "updateGasPrices" });
+        }
+      } else {
+        console.error("No gas price data available");
       }
     } else {
-      console.error("No gas price data available");
+      if (cachedData.cachedGasPrices && cachedData.cachedGasPrices.length > 0) {
+        const cachedPrice = cachedData.cachedGasPrices.find(
+          (price) => price.confidence === 90
+        );
+        if (cachedPrice) {
+          updateBadge(cachedPrice.price);
+        }
+      }
     }
   } catch (error) {
     console.error("Error fetching gas prices:", error);
@@ -126,7 +143,6 @@ function updateBadge(gasPrice) {
 function setCastBadge() {
   chrome.action.setBadgeBackgroundColor({ color: "#ff0000" });
 }
-
 
 chrome.runtime.onStartup.addListener(() => {
   chrome.storage.local.get("latestGasPrice", (data) => {

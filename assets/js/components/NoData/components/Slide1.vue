@@ -1,6 +1,6 @@
 <template>
     <div class="basic_home_div_ flex flex-col gap-2 items-center justify-center">
-        <P class="text-md p-2">To create an account on <span style="color:#D7DF23;">Decast</span>, go to the <a href="https://decast.live" target="_blank" class="text-blue-500">Decast.live</a> website and click the 'Login/Signup' button located in
+        <P class="text-md p-2">To create an account on <span style="color:#D7DF23;">Decast</span>, go to the <a href="https://decast.live" target="_blank" class="text-blue-500">Decast.live</a> website and click the '/user.signin' button located in
             the top right corner. For further guidance, hover over the image below to see where the button is located.
         </P>
         <div class="image-container">

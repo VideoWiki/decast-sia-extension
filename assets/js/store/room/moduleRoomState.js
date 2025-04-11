@@ -2,7 +2,8 @@ const getDefaultState = () => {
     return {
       rooms: [],
       room: {},
-      recordings: []
+      recordings: [],
+      activePopup: '',
     };
   };
 export default getDefaultState;

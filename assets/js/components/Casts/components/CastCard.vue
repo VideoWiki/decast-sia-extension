@@ -1,33 +1,38 @@
 <template>
   <div>
     <CastCardShimmer v-if="isLoading" />
-    <div v-else class="cast_list flex flex-col justify-between items-start text-left mb-4 w-full py-3 px-4">
+    <div v-else class="cast_list flex flex-col justify-between items-start text-left mb-4 w-full py-2 px-4">
       <div class="flex flex-row justify-between items-center w-full">
         <div class="flex flex-col gap-1">
-          <p class="font-semibold text-lg flex items-center">
+          <p class="font-normal text-lg flex items-center">
             {{ truncateText(castDetails.event_name, 25) }}
             <span class="text-red-500 text-sm flex items-center gap-2 ml-4"
               v-if="castDetails.is_running === 'true'"><span class="basic_live_dot_ rounded-full"></span>
             </span>
           </p>
-          <p style="color: #a6a6a6" class="mt-2">
+          <p style="color: #a6a6a6" class="mt-1">
             {{ castDetails.schedule_time }}
           </p>
         </div>
 
-        <div class="cursor-pointer">
-          <span v-if="castDetails.is_running === 'false' && !isCastStart"
-            @click="joinNow(castDetails.public_meeting_id)" v-tooltip="'/Start'">
-            <StartButton />
-          </span>
+        <div class="flex gap-1 items-center">
+          <div class="cursor-pointer" v-tooltip="'/Menu'" @click="openMenuModal">
+            <MenuButton />
+          </div>
+          <div class="cursor-pointer">
+            <span v-if="castDetails.is_running === 'false' && !isCastStart"
+              @click="joinNow(castDetails.public_meeting_id)" v-tooltip="'/Start'">
+              <StartButton />
+            </span>
 
-          <span v-if="castDetails.is_running === 'true'">
-            <LiveButton />
-          </span>
+            <span v-if="castDetails.is_running === 'true'">
+              <LiveButton />
+            </span>
 
-          <span v-else-if="isCastStart && castDetails.is_running === 'false'">
-            <LiveButton />
-          </span>
+            <span v-else-if="isCastStart && castDetails.is_running === 'false'">
+              <LiveButton />
+            </span>
+          </div>
         </div>
       </div>
       <div class="flex flex-row justify-start items-center gap-4 mt-2" v-if="castDetails.cast_type === 'public'">
@@ -47,6 +52,7 @@ import CastCardShimmer from "./CastCardShimmer.vue";
 import CopyButton from "../../../../common/CopyButton.vue";
 import StartButton from "../../../../common/StartButton.vue";
 import LiveButton from "../../../../common/LiveButton.vue";
+import MenuButton from "../../../../common/MenuButton.vue";
 
 export default {
   name: "CastCardShimmer",
@@ -56,6 +62,7 @@ export default {
     CopyButton,
     StartButton,
     LiveButton,
+    MenuButton,
   },
   data() {
     return {
@@ -71,6 +78,9 @@ export default {
     this.showURL(this.castDetails.public_meeting_id, this.castDetails.h_ap);
   },
   methods: {
+    openMenuModal() {
+      this.$emit('openMenuModal', this.castDetails);
+    },
     copy(id, pass) {
       if (pass === undefined) {
         navigator.clipboard.writeText("https://decast.live/live/" + id);
@@ -126,7 +136,21 @@ export default {
           });
         }
       } catch (e) {
-        console.log("error", e);
+        if (e.response?.data?.status === false &&
+          e.response?.data?.message === "please check the scheduled cast start time") {
+          this.$vs.notify({
+            title: 'Warning',
+            text: 'You can only access the cast 30 minutes or less before the scheduled start time.',
+            color: 'primary',
+          });
+        } else {
+          console.error('Error while joining the meeting:', e);
+          this.$vs.notify({
+            title: 'Error',
+            text: 'Failed to join the meeting. Please try again later.',
+            color: 'danger',
+          });
+        }
       }
     },
   },

@@ -1,15 +1,28 @@
-<!-- popup.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300&display=swap" />
-    <title>Decast</title>
+    <meta name="description" content="Decast Chrome Extension: Start private video calls, host secure online events, and share instant meeting links directly from your browser toolbar.">
+    <meta name="keywords" content="Decast, Chrome extension, video calls, online events, decentralized storage, remote meetings">
+    <meta name="author" content="Decast Team">
+    <!-- Open Graph tags for shareability -->
+    <meta property="og:title" content="Decast - One-Click Video Calls & Events">
+    <meta property="og:description" content="Launch private meetings or host secure events with Decast, a Chrome extension for seamless browser-based collaboration.">
+    <meta property="og:type" content="website">
+    <!-- Basic Content Security Policy -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300&display=swap">
+    <title>Decast - Video Calls & Event Hosting</title>
 </head>
 <body>
-    <div id="app"></div>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+    <div id="app" role="application" aria-live="polite">
+        <div class="loading">Loading Decast...</div>
+    </div>
+    <noscript>
+        <div style="padding: 20px; color: #721c24; background: #f8d7da;">
+            Please enable JavaScript to use Decast for video calls and events.
+        </div>
+    </noscript>
     <script src="popup.js"></script>
 </body>
 </html>

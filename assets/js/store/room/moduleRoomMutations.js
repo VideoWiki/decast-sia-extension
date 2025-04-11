@@ -10,7 +10,13 @@ export default {
   SET_ROOM(state, room) {
     state.room = room;
   },
+  ADD_ROOM(state, payload) {
+    state.rooms.push(payload);
+  },
   SET_RECORDINGS(state, recordings) {
     state.recordings = recordings;
-  }
+  },
+  SET_POPUP(state, payload) {
+    state.activePopup = payload;
+  },
 };

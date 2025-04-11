@@ -2,9 +2,9 @@
     <div v-if="loading">
         <CommonLoader />
     </div>
-    <div class="recordings flex flex-col justify-between items-center mb-4 w-full py-2 px-4 gap-2">
+    <div class="recordings flex flex-col justify-between items-center mb-2 w-full py-2 px-4 gap-2">
         <div class="flex flex-row justify-between items-center w-full">
-            <p class="text-lg font-semibold">
+            <p class="text-lg font-normal">
                 {{ truncateText(recording.Name, 20) }}
             </p>
             <div class="flex gap-2 justify-end items-center">
@@ -14,22 +14,18 @@
                     </vx-tooltip>
                 </span>
 
-                <span v-else-if="selectedStorage === 'swarm'" class="choose_plat cursor-pointer">
-                    <vx-tooltip text="/Uploaded to Swarm" position="top">
-                        <img class="w-6 h-6 object-contain" src="@/images/swarm.png" />
-                    </vx-tooltip>
+                <span v-else-if="selectedStorage === 'swarm'" class="choose_plat cursor-pointer"
+                    v-tooltip="'/Uploaded to Swarm'" position="top">
+                    <img class="w-6 h-6 object-contain" src="@/images/swarm.png" />
                 </span>
 
-                <span v-else-if="selectedStorage === 'sia'" class="choose_plat cursor-pointer">
-                    <vx-tooltip text="/Uploaded to Sia" position="top">
-                        <img class="w-8 h-8 object-contain" src="@/images/sia.png" />
-                    </vx-tooltip>
+                <span v-else-if="selectedStorage === 'sia'" class="choose_plat cursor-pointer"
+                    v-tooltip="'/Uploaded to Sia'" position="top">
+                    <img class="w-8 h-8 object-contain" src="@/images/sia.png" />
                 </span>
 
-                <span v-else class="no_storage cursor-pointer">
-                    <vx-tooltip text="/No storage selected" position="top">
-                        <p>O</p>
-                    </vx-tooltip>
+                <span v-else class="no_storage cursor-pointer" v-tooltip="'/No storage selected'" position="top">
+                    <p>O</p>
                 </span>
                 <span class="down_btn cursor-pointer" @click="handleDownloadRecording" v-tooltip="'/Download'">
                     <DownloadButton />
@@ -75,25 +71,25 @@
         </div>
         <div class="flex flex-row justify-between items-center w-full">
             <div class="flex flex-col gap-2">
-                <p style="color: #a6a6a6; font-size: 16px">
+                <p style="color: #a6a6a6; font-size: 14px">
                     >>Cast:
                     <span style="color: #d7df23">
-                        {{ truncateText(recording.cast_name, 20) }}
+                        {{ truncateText(recording.cast_name, 15) }}
                     </span>
                 </p>
 
-                <p style="color: #a6a6a6; font-size: 16px">
+                <p style="color: #a6a6a6; font-size: 14px">
                     >>Size:
                     <span style="color: #d7df23">
                         {{ recording["Playback Data"]["Playback Size"] }}</span>
                 </p>
             </div>
             <div class="flex flex-col gap-2">
-                <p class="flex justify-end items-end" style="color: #a6a6a6; font-size: 16px">
+                <p class="flex justify-end items-end" style="color: #a6a6a6; font-size: 14px">
                     {{ recording["Start Time (Readable)"].split(" ")[0] }}
                 </p>
 
-                <p style="color: #a6a6a6; font-size: 16px">
+                <p style="color: #a6a6a6; font-size: 14px">
                     >>Length:
                     <span style="color: #d7df23">{{ recording["Playback Data"]["Playback Length"] }} min</span>
                 </p>
@@ -161,7 +157,7 @@ export default {
             loading: false,
             taskId: '',
             selectedStorage: null,
-            load:false,
+            load: false,
         };
     },
     components: {
@@ -235,7 +231,7 @@ export default {
             const url = `${constants.apiCastUrl}/api/event/select/storage/?cast_id=${cast_id}`;
 
             try {
-                this.load=true;
+                this.load = true;
                 const response = await axios.get(url, {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -250,7 +246,7 @@ export default {
                     this.selectedStorage = null;
                 }
             } catch (error) {
-                this.load=true;
+                this.load = true;
                 console.error("Error fetching selected storage:", error);
                 this.selectedStorage = null;
             } finally {

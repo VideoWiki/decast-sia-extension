@@ -13,4 +13,7 @@ export default {
   SET_ALLCASTS(state, casts) {
     state.casts = casts;
   },
+  ADD_CAST(state, payload) {
+    state.casts.push(payload);
+  },
 };

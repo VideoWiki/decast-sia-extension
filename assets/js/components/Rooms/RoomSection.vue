@@ -1,20 +1,29 @@
 <template>
+  <CreateRoomModal v-if="showCreateRoomModal" @close="closeModal" :getList="getList" />
+  <RoomMenuModal v-if="showRoomOptions" @close="closeModal" :getList="getList" :roomDetails="selectedRoom"
+    :index="index" />
   <div>
-    <p class="font-bold text-2xl">//Calls</p>
-    <p class="mt-2" style="color: gray; font-size: 16px">
+    <p class="font-bold text-xl">//Calls</p>
+    <p class="mt-2" style="color: gray; font-size: 14px">
       //Secured confrence rooms for private calls.
     </p>
   </div>
 
-  <div class="choose-room mt-4 mb-4 flex flex-row gap-4">
-    <button class="options-button border-none text-lg font-bold" @click="changeFocus(true)"
-      :class="{ 'focused-button': focusYourRooms }">
-      Rooms
-    </button>
-    <button class="options-button border-none text-lg font-bold" @click="handleButtonClick"
-      :class="{ 'focused-button': !focusYourRooms }">
-      Recordings
-    </button>
+  <div class="choose-room mt-2 mb-4 flex flex-row justify-between items-center">
+    <div class="flex flex-row gap-4">
+      <button class="options-button border-none text-lg font-semibold" @click="changeFocus(true)"
+        :class="{ 'focused-button': focusYourRooms }">
+        Rooms
+      </button>
+      <button class="options-button border-none text-lg font-semibold" @click="handleButtonClick"
+        :class="{ 'focused-button': !focusYourRooms }">
+        Recordings
+      </button>
+    </div>
+
+    <div class="cursor-pointer" v-tooltip="'/room.create'" position="top" @click="openCreateRoomModal">
+      <CreateButton />
+    </div>
   </div>
 
   <div>
@@ -27,7 +36,7 @@
         </div>
         <div v-else-if="rooms.length">
           <div v-for="(room, index) in rooms" :key="index">
-            <RoomCard :getRoomList="getList" :room="room" :index="index" :roomsList="rooms" />
+            <RoomCard :getRoomList="getList" :room="room" :index="index" :roomsList="rooms" @openRoomMenu="openRoomMenu"/>
           </div>
         </div>
       </div>
@@ -45,7 +54,7 @@
         </div>
         <div v-else class="recording flex flex-col items-center justify-items-center gap-4 mt-4">
           <span>
-            <NoRecording/>
+            <NoRecording />
           </span>
           <h1 class="text-lg text-white font-semibold">No Recordings Found.</h1>
         </div>
@@ -60,6 +69,9 @@ import RecordingCard from './components/RecordingCard.vue'
 import RoomCardShimmer from './components/RoomCardShimmer.vue';
 import RecordingCardShimmer from './components/RecordingCardShimmer.vue';
 import NoRecording from '../../../common/NoRecording.vue';
+import CreateButton from '../../../common/CreateButton.vue';
+import CreateRoomModal from './components/CreateRoomModal.vue';
+import RoomMenuModal from '../../../common/RoomMenuModal.vue';
 export default {
   name: "RoomSection",
   components: {
@@ -68,6 +80,9 @@ export default {
     RecordingCardShimmer,
     RecordingCard,
     NoRecording,
+    CreateButton,
+    CreateRoomModal,
+    RoomMenuModal,
   },
   data() {
     return {
@@ -79,6 +94,9 @@ export default {
       focusYourRooms: true,
       isRoomsLoading: false,
       isRecordingLoading: true,
+      showCreateRoomModal: false,
+      showRoomOptions: false,
+      selectedRoom: null,
 
     };
   },
@@ -117,6 +135,17 @@ export default {
     }
   },
   methods: {
+    openRoomMenu(room) {
+      this.selectedRoom = room;
+      this.showRoomOptions = true;
+    },
+    openCreateRoomModal() {
+      this.showCreateRoomModal = true;
+    },
+    closeModal() {
+      this.showRoomOptions = false;
+      this.showCreateRoomModal = false;
+    },
     changeFocus(toYourRooms) {
       this.focusYourRooms = toYourRooms;
     },
@@ -162,6 +191,19 @@ export default {
       this.isRecordingLoading = false;
     },
 
+    createRoom() {
+      this.$store
+        .dispatch('room/addRoom', this.text)
+        .then(async (res) => {
+          // console.log(res.data);
+          this.createPopup = false;
+          this.closeModal();
+        })
+        .catch((e) => {
+          console.log(e.resonse);
+        });
+    },
+
   }
 }
 
@@ -183,7 +225,7 @@ export default {
 
 .room_list_cont {
   overflow: scroll !important;
-  height: 235px;
+  height: 270px;
 }
 
 .room_list_cont::-webkit-scrollbar {

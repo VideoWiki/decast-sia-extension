@@ -1,31 +1,36 @@
 <template>
     <div>
         <DecastCardShimmer v-if="isLoading" />
-        <div v-else class="cast_list flex flex-col justify-between items-start text-left mb-4 w-full py-3 px-4">
+        <div v-else class="cast_list flex flex-col justify-between items-start text-left mb-4 w-full py-2 px-4">
             <div class="flex flex-row justify-between items-center w-full">
                 <div class="flex flex-col gap-1">
-                    <p class="font-semibold text-lg flex items-center">
+                    <p class="font-normal text-lg flex items-center">
                         {{ truncateText(castDetails.event_name, 25) }}
                         <span class="text-red-500 text-sm flex items-center gap-2 ml-4"
                             v-if="castDetails.is_running === 'true'"><span class="basic_live_dot_ rounded-full"></span>
                         </span>
                     </p>
-                    <p style="color: #a6a6a6;" class="mt-2">{{ castDetails.schedule_time }}</p>
+                    <p style="color: #a6a6a6;" class="mt-1">{{ castDetails.schedule_time }}</p>
                 </div>
 
-                <div class="cursor-pointer">
-                    <span v-if="castDetails.is_running === 'false' && !isCastStart" @click="openModal"
-                        v-tooltip="'/storage.select'">
-                        <StartButton />
-                    </span>
-                    <!-- @click="joinNow(castDetails.public_meeting_id)" -->
-                    <span v-if="castDetails.is_running === 'true'">
-                        <LiveButton />
-                    </span>
+                <div class="flex gap-1 items-center">
+                    <div class="cursor-pointer" v-tooltip="'/Menu'" @click="openMenuModal">
+                        <MenuButton />
+                    </div>
+                    <div class="cursor-pointer">
+                        <span v-if="castDetails.is_running === 'false' && !isCastStart" @click="openModal"
+                            v-tooltip="'/storage.select'">
+                            <StartButton />
+                        </span>
+                        <!-- @click="joinNow(castDetails.public_meeting_id)" -->
+                        <span v-if="castDetails.is_running === 'true'">
+                            <LiveButton />
+                        </span>
 
-                    <span v-else-if="isCastStart && castDetails.is_running === 'false'">
-                        <LiveButton />
-                    </span>
+                        <span v-else-if="isCastStart && castDetails.is_running === 'false'">
+                            <LiveButton />
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="flex flex-row justify-start items-center gap-4 mt-2" v-if="castDetails.cast_type === 'public'">
@@ -46,6 +51,7 @@ import CopyButton from "../../../../common/CopyButton.vue";
 import StartButton from "../../../../common/StartButton.vue";
 import DownButton from "../../../../common/DownButton.vue";
 import LiveButton from "../../../../common/LiveButton.vue";
+import MenuButton from "../../../../common/MenuButton.vue";
 
 export default {
     name: "DecastCardShimmer",
@@ -55,7 +61,8 @@ export default {
         CopyButton,
         StartButton,
         LiveButton,
-        DownButton
+        DownButton,
+        MenuButton,
     },
     data() {
         return {
@@ -73,6 +80,9 @@ export default {
     methods: {
         openModal() {
             this.$emit('openModal', this.castDetails);
+        },
+        openMenuModal(){
+            this.$emit('openMenuModal', this.castDetails);
         },
         copy(id, pass) {
             if (pass === undefined) {

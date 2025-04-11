@@ -1,22 +1,31 @@
 <template>
+  <CreateDecastModal v-if="showCreateDecastModal" @close="closeModal" :getCastList="getCastList" />
   <StorageModal v-if="showStorageModal" :castDetails="selectedCast" :index="index" @close="closeModal"
     :getCastList="getCastList" />
+  <MenuOptionsModal v-if="showOptionsModal" :castDetails="selectedCast" :index="index" @close="closeModal"
+    :getCastList="getCastList" />
   <div>
-    <p class="font-bold text-2xl">//Decentralized Casts</p>
-    <p class="mt-2" style="color: gray; font-size: 16px">
+    <p class="font-bold text-xl">//Decentralized Casts</p>
+    <p class="mt-2" style="color: gray; font-size: 14px">
       //Host casts that have decentralized records.
     </p>
   </div>
 
-  <div class="choose-room mt-4 mb-4 flex flex-row gap-4">
-    <button class="options-button border-none text-lg font-bold" @click="changeFocus(true)"
-      :class="{ 'focused-button': focusYourRooms }">
-      Decasts
-    </button>
-    <button class="options-button border-none text-lg font-bold" @click="handleButtonClick"
-      :class="{ 'focused-button': !focusYourRooms }">
-      Recordings
-    </button>
+  <div class="choose-room mt-2 mb-2 flex flex-row justify-between items-center">
+    <div class="flex flex-row gap-4">
+      <button class="options-button border-none text-lg font-semibold" @click="changeFocus(true)"
+        :class="{ 'focused-button': focusYourRooms }">
+        Decasts
+      </button>
+      <button class="options-button border-none text-lg font-semibold" @click="handleButtonClick"
+        :class="{ 'focused-button': !focusYourRooms }">
+        Recordings
+      </button>
+    </div>
+
+    <div class="cursor-pointer" v-tooltip="'/decast.create'" position="top" @click="openCreateDecastModal">
+      <CreateButton />
+    </div>
   </div>
 
   <div class="flex flex-col gap-4">
@@ -28,12 +37,11 @@
       </div>
       <div v-else-if="castList.length === 0"
         class="flex flex-row h-full items-center justify-center text-white text-center">
-        <span>Decast hasn't been created yet. Click <a href="https://decast.live/dashboard/decast" target="_blank"
-            class="text-blue-500">here</a> to get started and create your Decast now!</span>
+        <span>Decast hasn't been created yet. Click <span @click="openCreateDecastModal" class="text-blue-500">here</span> to get started and create your Decast now!</span>
       </div>
 
-      <div v-else-if="castList.length !== 0" v-for="(cast, index) in castList" :key="index">
-        <CastCard :castDetails="cast" :index="index" :getCastList="getCastList" @openModal="openModal(cast)" />
+      <div v-else-if="castList.length !== 0" v-for="(cast, index) in castList" :key="index" class="mt-1">
+        <CastCard :castDetails="cast" :index="index" :getCastList="getCastList" @openModal="openModal(cast)" @openMenuModal="openMenuModal(cast)"/>
       </div>
     </div>
     <div v-else class="cast_list_cont">
@@ -86,6 +94,9 @@ import RecordingCardShimmer from './components/RecordingCardShimmer.vue';
 import RecordingCard from './components/RecordingCard.vue';
 import CastCard from './components/DecastCard.vue';
 import StorageModal from './components/StorageModal.vue';
+import CreateButton from '../../../common/CreateButton.vue';
+import CreateDecastModal from './components/CreateDecastModal.vue';
+import MenuOptionsModal from '../../../common/MenuOptionsModal.vue';
 export default {
   name: "CastSection",
   data() {
@@ -100,7 +111,9 @@ export default {
       casts: [],
       recordings: [],
       showStorageModal: false,
+      showOptionsModal: false,
       selectedCast: null,
+      showCreateDecastModal: false,
     };
   },
   components: {
@@ -108,7 +121,10 @@ export default {
     RecordingCardShimmer,
     RecordingCard,
     CastCard,
-    StorageModal
+    StorageModal,
+    CreateButton,
+    CreateDecastModal,
+    MenuOptionsModal,
   },
   mounted() {
     this.getCastList();
@@ -143,12 +159,22 @@ export default {
     //   this.castList[id].isCastStart = true;
     //   this.closeModal();
     // },
+
+    openCreateDecastModal() {
+      this.showCreateDecastModal = true;
+    },
     openModal(cast) {
       this.selectedCast = cast;
       this.showStorageModal = true;
     },
+    openMenuModal(cast) {
+      this.selectedCast = cast;
+      this.showOptionsModal = true;
+    },
     closeModal() {
       this.showStorageModal = false;
+      this.showOptionsModal = false;
+      this.showCreateDecastModal = false;
     },
     changeFocus(toYourRooms) {
       this.focusYourRooms = toYourRooms;
@@ -224,7 +250,7 @@ export default {
 
 .cast_list_cont {
   overflow: scroll !important;
-  height: 235px;
+  height: 275px;
 }
 
 .cast_list_cont::-webkit-scrollbar {

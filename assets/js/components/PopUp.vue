@@ -78,19 +78,19 @@
 
     <!-- footer section  -->
 
-    <div class="basic_button_section p-4 pt-1 bg-black flex items-center justify-between w-full">
+    <div class="basic_button_section p-4 pt-0 bg-black flex items-center justify-between w-full">
       <button @click="onRoom" :class="{ 'calls_btn_': true, 'calls_clicked': isClicked1 }"
-        class="px-6 py-2 text-xl font-bold">
+        class="px-6 py-1 text-xl font-bold">
         <img :src="callSrc" alt="Image">
         <p class="font-semibold text-base">CALLS</p>
       </button>
       <button @click="onCasts" :class="{ 'casts_btn': true, 'cast_clicked': isClicked2 }"
-        class="px-6 py-2 text-xl font-bold mx-4">
+        class="px-6 py-1 text-xl font-bold mx-4">
         <img :src="castSrc" alt="Image">
         <p class="font-semibold text-base">CASTS</p>
       </button>
       <button @click="onDecasts" :class="{ 'decast_btn': true, 'decast_clicked': isClicked3 }"
-        class="decast_btn px-6 py-2 text-xl font-bold">
+        class="decast_btn px-6 py-1 text-xl font-bold">
         <img :src="decastSrc" alt="Image">
         <p class="font-semibold text-base">DECAST</p>
       </button>
@@ -274,8 +274,8 @@ export default {
 
 .basic_child_1 p {
   color: #fff;
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 22px;
+  font-weight: semibold;
 }
 
 .basic_child_2 img {
@@ -309,7 +309,7 @@ export default {
 
 .parent_3 {
   width: 100%;
-  height: 400px;
+  height: 415px;
   border: 1px solid #fff;
   position: relative;
   /* border: 1px solid red */

@@ -9,7 +9,7 @@
         </p>
 
         <div class="image-container3">
-            <img class="zoom-image3 object-contain" src="../../../../images/extension.png" />
+            <img class="zoom-image3 object-contain" src="../../../../images/ext-new.png" />
         </div>
     </div>
 </template>
