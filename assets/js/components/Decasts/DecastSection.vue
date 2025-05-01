@@ -41,7 +41,7 @@
       </div>
 
       <div v-else-if="castList.length !== 0" v-for="(cast, index) in castList" :key="index" class="mt-1">
-        <CastCard :castDetails="cast" :index="index" :getCastList="getCastList" @openModal="openModal(cast)" @openMenuModal="openMenuModal(cast)"/>
+        <DecastCard :castDetails="cast" :index="index" :getCastList="getCastList" @openModal="openModal(cast)" @openMenuModal="openMenuModal(cast)"/>
       </div>
     </div>
     <div v-else class="cast_list_cont">

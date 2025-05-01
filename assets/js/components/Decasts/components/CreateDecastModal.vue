@@ -164,7 +164,7 @@ export default {
                 allow_moderator_to_unmute_user: false,
                 webcam_only_for_moderator: false,
                 auto_start_recording: false,
-                allow_start_stop_recording: false,
+                allow_start_stop_recording: true,
                 disable_cam: false,
                 disable_mic: false,
                 lock_layout: true,

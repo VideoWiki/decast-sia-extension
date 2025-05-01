@@ -1,56 +1,80 @@
 <template>
     <div class="modal">
-        <div v-if="loading">
+        <div v-if="loading" class="loader-overlay">
             <CommonLoader />
         </div>
-        <div class="modal-content h-full flex flex-col gap-6 justify-start items-center pt-2">
-            <div class="basic_child_modal_ flex flex-col gap-4 justify-start items-center w-full p-4 pt-2 text-left">
-                <label for="storage-select" class="text-left text-lg text-white w-full">//cast.create</label>
-                <form @submit.prevent="submitCastForm" class="w-full flex flex-col gap-4">
-                    <input v-model="stepOneProps.event_name" type="text" placeholder="Cast Name" class="input_field"
+        <div class="modal-content flex flex-col gap-6 justify-start items-center p-4">
+            <div class="w-full flex flex-col gap-4">
+                <label class="text-lg text-white font-bold">//cast.create</label>
+                <form @submit.prevent="submitCastForm" class="flex flex-col gap-6">
+                    <!-- Event Name -->
+                    <input v-model="stepOneProps.event_name" type="text" placeholder="Cast Name" class="input-field"
                         required />
-                    <div class="flex gap-4">
 
-                        <textarea v-model="stepOneProps.description" placeholder="Description"
-                            class="textarea_field text-lg w-2/3" rows="3" required></textarea>
-                        <div class="w-1/3 flex flex-col gap-4">
-                            <span
-                                :class="{ 'green-button': stepOneProps.meeting_type === 'public', 'white-button': stepOneProps.meeting_type !== 'public' }"
-                                class="w-full text-lg text-black flex items-center justify-center p-2 cursor-pointer"
-                                @click="setMeetingType('public')">
+                    <!-- Description and Meeting Type -->
+                    <div class="flex gap-4">
+                        <textarea v-model="stepOneProps.description" placeholder="Description" class="textarea-field"
+                            rows="3" required></textarea>
+                        <div class="flex flex-col gap-2 w-1/3">
+                            <button type="button"
+                                :class="{ 'btn-active': stepOneProps.meeting_type === 'public', 'btn-inactive': stepOneProps.meeting_type !== 'public' }"
+                                class="btn-toggle" @click="setMeetingType('public')">
                                 >>public
-                            </span>
-                            <span
-                                :class="{ 'green-button': stepOneProps.meeting_type === 'private', 'white-button': stepOneProps.meeting_type !== 'private' }"
-                                class="w-full text-lg text-black flex items-center justify-center p-2 cursor-pointer"
-                                @click="setMeetingType('private')">
+                            </button>
+                            <button type="button"
+                                :class="{ 'btn-active': stepOneProps.meeting_type === 'private', 'btn-inactive': stepOneProps.meeting_type !== 'private' }"
+                                class="btn-toggle" @click="setMeetingType('private')">
                                 >>private
-                            </span>
+                            </button>
                         </div>
                     </div>
-                    <div class="flex gap-4">
-                        <input v-model="stepOneProps.startD" type="date" class="input_field" :max="'2099-12-31'" min="minDate" required />
-                        <input v-model="stepOneProps.startTime" type="time" class="input_field" required />
-                    </div>
-                    <div class="flex gap-4">
-                        <input v-model="stepOneProps.duration" type="number" placeholder="Duration (in minutes)"
-                            class="input_field" min="60" max="480" required />
 
-                        <select v-model="stepOneProps.timezone" class="select_field" required>
+                    <!-- Storage Selection -->
+                    <div class="flex flex-col gap-2">
+                        <label class="text-white text-sm">//storage.type</label>
+                        <div class="flex gap-4">
+                            <button type="button"
+                                :class="{ 'btn-active': storageType === 'centralized', 'btn-inactive': storageType !== 'centralized' }"
+                                class="btn-toggle flex-1" @click="setStorageType('centralized')">
+                                >>centralized
+                            </button>
+                            <button type="button"
+                                :class="{ 'btn-active': storageType === 'decentralized', 'btn-inactive': storageType !== 'decentralized' }"
+                                class="btn-toggle flex-1" @click="setStorageType('decentralized')">
+                                >>decentralized
+                            </button>
+                        </div>
+
+                        <div class="info text-white text-sm border border-green-500 p-2 mt-1">
+                            <span class="text-green-500">//Note:</span> Centralized storage saves your recordings on Decast's cloud. Decentralized storage lets you
+                            choose from a list of tamper-proof decentralized storage options.
+                        </div>
+                    </div>
+
+                    <!-- Date and Time -->
+                    <div class="flex gap-4">
+                        <input v-model="stepOneProps.startD" type="date" class="input-field" :max="'2099-12-31'"
+                            :min="minDate" required />
+                        <input v-model="stepOneProps.startTime" type="time" class="input-field" required />
+                    </div>
+
+                    <!-- Duration and Timezone -->
+                    <div class="flex gap-4">
+                        <input v-model="stepOneProps.duration" type="number" placeholder="Duration (minutes)"
+                            class="input-field" value="60" min="60" max="480" required />
+                        <select v-model="stepOneProps.timezone" class="select-field" required>
                             <option value="" disabled>Select Timezone</option>
                             <option v-for="zone in timezones" :key="zone" :value="zone">{{ zone }}</option>
                         </select>
                     </div>
 
-                    <div class="w-full flex items-center justify-between gap-4">
-                        <button type="submit"
-                            :disabled="stepOneProps.event_name == '' || stepOneProps.duration == '' || stepOneProps.description == '' || stepOneProps.timezone == '' || stepOneProps.startD == '' || stepOneProps.startTime == ''"
-                            class="btn-create-cast w-1/2 p-2 text-lg text-black flex items-center justify-center gap-2 disabled:opacity-80 disabled:cursor-not-allowed">
+                    <!-- Form Actions -->
+                    <div class="flex gap-4">
+                        <button type="submit" :disabled="!isFormValid" class="btn-create w-1/2">
                             >>Create
                         </button>
-                        <button type="button" @click="closeModal"
-                            class="cancel_btn_ w-1/2 p-2 text-lg bg-black text-red-500">
-                            Close
+                        <button type="button" @click="closeModal" class="btn-cancel w-1/2">
+                            >>Cancel
                         </button>
                     </div>
                 </form>
@@ -58,21 +82,22 @@
         </div>
     </div>
 </template>
+
 <script>
 import CommonLoader from '../../../../common/CommonLoader.vue';
 import moment from 'moment';
 
 export default {
-    name: "CreateCastModal",
+    name: 'CreateCastModal',
     components: {
         CommonLoader,
     },
-    props: ['getCastList'],
+    props: ['getCastList', 'getDecastList'],
     data() {
         return {
             loading: false,
-            formData: new FormData(),
             minDate: moment().format('YYYY-MM-DD'),
+            storageType: 'centralized',
             stepOneProps: {
                 mint_function_name: '',
                 mintfnc_name_error: false,
@@ -130,6 +155,7 @@ export default {
                 timeZoneList: [],
                 event_tag: ['videowiki'],
                 startD: moment().format('YYYY-MM-DD'),
+                is_decast: "False",
             },
             stepTwoProps: {
                 BackImageURL: '',
@@ -157,13 +183,13 @@ export default {
             },
             stepFourProps: {
                 start_stop_recording: true,
-                record: true,
+                record: 'True',
                 mute_on_start: true,
                 end_when_no_moderator: true,
                 allow_moderator_to_unmute_user: false,
                 webcam_only_for_moderator: false,
                 auto_start_recording: false,
-                allow_start_stop_recording: false,
+                allow_start_stop_recording: true,
                 disable_cam: false,
                 disable_mic: false,
                 lock_layout: true,
@@ -177,16 +203,21 @@ export default {
                 meeting_settings: false,
                 checkBox: '',
             },
-            timezones: [
-                "UTC",
-                "GMT",
-                "EST",
-                "CST",
-                "PST",
-                "IST",
-                "AEST"
-            ]
+            timezones: ['UTC', 'GMT', 'EST', 'CST', 'PST', 'IST', 'AEST'],
         };
+    },
+    computed: {
+        isFormValid() {
+            return (
+                this.stepOneProps.event_name &&
+                this.stepOneProps.description &&
+                this.stepOneProps.startD &&
+                this.stepOneProps.startTime &&
+                this.stepOneProps.duration &&
+                this.stepOneProps.timezone &&
+                this.storageType
+            );
+        },
     },
     mounted() {
         const systemTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -194,78 +225,80 @@ export default {
             this.timezones.push(systemTimezone);
         }
         this.stepOneProps.timezone = systemTimezone || this.timezones[0];
-        // console.log('stepOneProps.timezone:', this.stepOneProps.timezone);
-        // console.log('Updated timezones list:', this.timezones);
     },
     methods: {
         setMeetingType(type) {
             this.stepOneProps.meeting_type = type;
             this.stepOneProps.auth_type = type;
         },
+        setStorageType(type) {
+            this.storageType = type;
+            this.stepOneProps.is_decast = type === 'decentralized';
+        },
         async submitCastForm() {
             this.loading = true;
             const formData = new FormData();
 
+            // Format time
             if (this.stepOneProps.startTime) {
                 this.stepOneProps.startTime = moment(this.stepOneProps.startTime, 'HH:mm').format('HH:mm:ss');
             }
             if (this.stepOneProps.startD && this.stepOneProps.startTime) {
-                this.stepOneProps.schedule_time = moment(`${this.stepOneProps.startD} ${this.stepOneProps.startTime}`, 'YYYY-MM-DD HH:mm').format('YYYY-MM-DD HH:mm:ss');
+                this.stepOneProps.schedule_time = moment(
+                    `${this.stepOneProps.startD} ${this.stepOneProps.startTime}`,
+                    'YYYY-MM-DD HH:mm'
+                ).format('YYYY-MM-DD HH:mm:ss');
             } else {
                 this.stepOneProps.schedule_time = null;
             }
+
+            // Convert boolean fields and append to formData
             const convertBooleanFields = (props) => {
-                this.loading = true;
                 for (const key in props) {
                     const value = props[key];
                     if (value === true) {
-                        formData.append(key, "True");
+                        formData.append(key, 'True');
                     } else if (value === false) {
-                        formData.append(key, "False");
-                    }
-                    else if (value === "" || value === null) {
-                        formData.append(key, null);
-                    }
-                    else if (key === 'startTime' || key === 'schedule_time') {
-                        formData.append(key, value);
-                    }
-                    else {
+                        formData.append(key, 'False');
+                    } else if (value === '' || value === null) {
+                        formData.append(key, '');
+                    } else {
                         formData.append(key, value);
                     }
                 }
             };
+
             convertBooleanFields(this.stepOneProps);
             convertBooleanFields(this.stepTwoProps);
             convertBooleanFields(this.stepThreeProps);
             convertBooleanFields(this.stepFourProps);
+
             try {
-                this.loading = true;
-                const res = await this.$store.dispatch('cast/submitForm', formData);
+                await this.$store.dispatch('cast/submitForm', formData);
                 this.$vs.notify({
                     title: 'Congrats!',
                     text: 'Cast created successfully',
                     color: 'success',
                 });
                 this.closeModal();
-                this.loading = false;
                 this.getCastList();
-                // console.log(res);
+                this.getDecastList();
             } catch (e) {
-                this.loading = false;
                 this.$vs.notify({
                     title: 'Error!',
                     text: 'Try again',
                     color: 'danger',
                 });
                 console.error(e);
+            } finally {
+                this.loading = false;
             }
         },
-
         closeModal() {
             this.$emit('close');
         },
     },
-}
+};
 </script>
 
 <style scoped>
@@ -274,7 +307,7 @@ export default {
 }
 
 .modal {
-    z-index: 99;
+    z-index: 100;
     position: absolute;
     background: #000;
     border: 1px solid #fff;
@@ -283,6 +316,7 @@ export default {
     height: 415px;
     left: 0;
     top: 0;
+    overflow: hidden;
 }
 
 .basic_child_modal_ {
@@ -290,51 +324,108 @@ export default {
     overflow-y: scroll;
 }
 
-.modal ::-webkit-scrollbar {
+.modal-content {
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.modal-content::-webkit-scrollbar {
     display: none;
 }
 
-.btn-create-cast {
-    background: #22c55e;
-    border: 1px solid #fff;
-    border-right: 2px solid #fff;
-    border-bottom: 2px solid #fff;
-}
-
-.cancel_btn_ {
-    border: 1px solid red;
-    border-right: 2px solid red;
-    border-bottom: 2px solid red;
-}
-
-.heading_basic_ {
-    border-top: 2px dashed #fff;
-    border-bottom: 2px dashed #fff;
-    color: #22c55e;
-}
-
-
-.input_field,
-.textarea_field,
-.select_field {
+.loader-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    padding: 5px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    color: #000;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 101;
 }
 
-.textarea_field {
+.input-field,
+.textarea-field,
+.select-field {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #22c55e;
+    background: #1a1a1a;
+    color: #fff;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.input-field:focus,
+.textarea-field:focus,
+.select-field:focus {
+    outline: none;
+    border-color: #D7DF23;
+}
+
+.textarea-field {
     resize: none;
 }
 
-.green-button {
-    background-color: #22c55e;
-    color: white;
+.btn-toggle {
+    padding: 8px;
+    border: 1px solid #22c55e;
+    font-size: 14px;
+    text-align: center;
+    transition: all 0.3s;
 }
 
-.white-button {
-    background-color: white;
-    color: black;
+.btn-active {
+    background: #22c55e;
+    color: #000;
+    font-weight: bold;
+}
+
+.btn-inactive {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+.btn-toggle:hover {
+    background: #D7DF23;
+    color: #000;
+}
+
+.btn-create {
+    background: #22c55e;
+    border: 2px solid #22c55e;
+    color: #000;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.btn-create:hover {
+    background: #D7DF23;
+    border-color: #D7DF23;
+}
+
+.btn-create:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-cancel {
+    background: #1a1a1a;
+    border: 2px solid #ff5555;
+    color: #ff5555;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.btn-cancel:hover {
+    background: #ff5555;
+    color: #000;
 }
 </style>

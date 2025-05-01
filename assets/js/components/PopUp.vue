@@ -71,7 +71,7 @@
         <UserInfo v-if="showProfile" :showProfile="this.showProfile" @close="this.showProfile = false" />
         <RoomSection v-if="rooms" />
         <CastSection v-if="casts" />
-        <DecastSection v-if="decasts" />
+        <ContactSection v-if="contacts" />
         <!-- <p class="text-white">this is : {{ userInfo }}</p> -->
       </div>
     </div>
@@ -89,10 +89,10 @@
         <img :src="castSrc" alt="Image">
         <p class="font-semibold text-base">CASTS</p>
       </button>
-      <button @click="onDecasts" :class="{ 'decast_btn': true, 'decast_clicked': isClicked3 }"
-        class="decast_btn px-6 py-1 text-xl font-bold">
-        <img :src="decastSrc" alt="Image">
-        <p class="font-semibold text-base">DECAST</p>
+      <button @click="onContacts" :class="{ 'contact_btn': true, 'contact_clicked': isClicked3 }"
+        class="contact_btn px-2 py-1 text-xl gap-1 font-bold"> 
+        <img :src="decastSrc" class="w-8 h-8" alt="Image">
+        <p class="font-semibold text-base">CONTACTS</p>
       </button>
     </div>
   </div>
@@ -101,7 +101,7 @@
 <script>
 import RoomSection from "./Rooms/RoomSection.vue";
 import CastSection from "./Casts/CastSection.vue";
-import DecastSection from "./Decasts/DecastSection.vue";
+// import DecastSection from "./Decasts/DecastSection.vue";
 import NoUser from "./NoData/NoUser.vue";
 import ErrorModal from '../../common/SessionExpired.vue';
 import UserInfo from './User/UserInfo.vue';
@@ -111,26 +111,29 @@ import callIcon from '@/images/call-icon.svg';
 import callIconAlt from '@/images/call-icon-alt.svg';
 import castIcon from '@/images/cast-icon.svg';
 import castIconAlt from '@/images/cast-icon-alt.svg';
-import decastIcon from '@/images/decast-icon.svg';
-import decastIconAlt from '@/images/decast-icon-alt.svg';
+import decastIcon from '@/images/contact.svg';
+import decastIconAlt from '@/images/contact-alt.svg';
+import ContactSection from "./Contacts/ContactSection.vue";
 export default {
   name: "PopUp",
   components: {
     RoomSection,
     CastSection,
-    DecastSection,
+    // DecastSection,
     NoUser,
     ErrorModal,
+    ContactSection,
     UserInfo
   },
   data() {
     return {
-      rooms: true,
+      rooms: false,
       casts: false,
       decasts: false,
-      isClicked1: true,
+      contacts: true,
+      isClicked1: false,
       isClicked2: false,
-      isClicked3: false,
+      isClicked3: true,
       showProfile: false,
       fastPrice: '',
       slowPrice: '',
@@ -176,7 +179,7 @@ export default {
         this.getGasPricesFromStorage();
       }
     });
-    this.onRoom();
+    this.onContacts();
   },
   methods: {
     onProfile() {
@@ -184,7 +187,7 @@ export default {
     },
     onRoom() {
       this.casts = false;
-      this.decasts = false;
+      this.contacts = false;
       this.rooms = true;
       this.isClicked2 = false;
       this.isClicked1 = true;
@@ -196,7 +199,7 @@ export default {
     },
     onCasts() {
       this.casts = true;
-      this.decasts = false;
+      this.contacts = false;
       this.rooms = false;
       this.isClicked2 = true;
       this.isClicked1 = false;
@@ -206,9 +209,9 @@ export default {
       this.decastSrc = decastIconAlt;
       // console.log(this.accessToken, this.userInfo, 'data')
     },
-    onDecasts() {
+    onContacts() {
       this.casts = false;
-      this.decasts = true;
+      this.contacts = true;
       this.rooms = false;
       this.isClicked2 = false;
       this.isClicked1 = false;
@@ -362,13 +365,13 @@ export default {
   color: black;
 }
 
-.decast_btn {
+.contact_btn {
   background-color: black;
   border: 1px solid white;
   color: white;
 }
 
-.decast_clicked {
+.contact_clicked {
   background-color: white;
   color: black;
 }

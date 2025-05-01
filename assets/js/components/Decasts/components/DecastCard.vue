@@ -54,7 +54,7 @@ import LiveButton from "../../../../common/LiveButton.vue";
 import MenuButton from "../../../../common/MenuButton.vue";
 
 export default {
-    name: "DecastCardShimmer",
+    name: "DecastCard",
     props: ["castDetails", "index", "getCastList"],
     components: {
         DecastCardShimmer,
@@ -75,6 +75,7 @@ export default {
         }
     },
     mounted() {
+        console.log('mounted', this.castDetails);
         this.showURL(this.castDetails.public_meeting_id, this.castDetails.h_ap);
     },
     methods: {
