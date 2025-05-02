@@ -3,7 +3,7 @@
     <transition name="dialog">
       <div class="dialog">
         <div class="dialog-content">
-          <button class="dialog-close" @click="$emit('close')" aria-label="Close dialog">
+          <button class="dialog-close text-4xl" @click="$emit('close')" aria-label="Close dialog">
             ×
           </button>
           <h3 class="text-sm font-bold text-green-500">// Add Contact</h3>
@@ -44,7 +44,7 @@
                     >
                       {{ tag }}
                       <button
-                        class="remove-tag"
+                        class="remove-tag text-xl"
                         @click.stop="removeTag(tag)"
                         :aria-label="`Remove tag ${tag}`"
                       >
@@ -223,7 +223,7 @@
   .dialog-content {
     background: #010101;
     padding: 12px;
-    border-radius: 4px;
+    /* border-radius: 4px; */
     width: 100%;
     max-width: 450px;
     overflow-y: auto;
@@ -237,7 +237,6 @@
     background: none;
     border: none;
     color: #fff;
-    font-size: 16px;
     cursor: pointer;
   }
   
@@ -258,7 +257,7 @@
     border: 1px solid #374151;
     background: #1a1a1a;
     color: #fff;
-    border-radius: 4px;
+    /* border-radius: 4px; */
     font-size: 12px;
     transition: border-color 0.3s, box-shadow 0.3s;
     width: 100%;
@@ -273,7 +272,7 @@
   .btn-create,
   .btn-cancel {
     padding: 4px 8px;
-    border-radius: 4px;
+    /* border-radius: 4px; */
     font-size: 12px;
     font-weight: 600;
     transition: all 0.3s;
@@ -341,7 +340,7 @@
     background: #22c55e;
     color: #000;
     padding: 2px 6px;
-    border-radius: 12px;
+    /* border-radius: 12px; */
     font-size: 10px;
     display: flex;
     align-items: center;
@@ -352,7 +351,7 @@
     background: none;
     border: none;
     color: #000;
-    font-size: 12px;
+    /* font-size: 12px; */
     line-height: 1;
     cursor: pointer;
   }
@@ -373,7 +372,7 @@
     right: 0;
     background: #1a1a1a;
     border: 1px solid #374151;
-    border-radius: 4px;
+    /* border-radius: 4px; */
     max-height: 150px;
     overflow-y: auto;
     z-index: 100;

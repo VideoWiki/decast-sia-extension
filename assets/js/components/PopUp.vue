@@ -315,6 +315,7 @@ export default {
   height: 415px;
   border: 1px solid #fff;
   position: relative;
+  overflow: hidden;
   /* border: 1px solid red */
 }
 
